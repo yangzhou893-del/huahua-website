@@ -2,24 +2,8 @@
    花叔心理 · JavaScript
    ======================================== */
 
-// ===== Hero 照片轮播 =====
-(function() {
-    const carousel = document.getElementById('heroCarousel');
-    if (!carousel) return;
-    const photos = carousel.querySelectorAll('.hero-photo');
-    if (photos.length < 2) return;
-    
-    let current = 0;
-    const interval = 4000; // 4秒切换
-    
-    function nextSlide() {
-        photos[current].classList.remove('active');
-        current = (current + 1) % photos.length;
-        photos[current].classList.add('active');
-    }
-    
-    setInterval(nextSlide, interval);
-})();
+// ===== Hero 单张头像 =====
+// 固定使用 side.jpg
 
 // ===== Mobile nav toggle =====
 const navToggle = document.getElementById('navToggle');
