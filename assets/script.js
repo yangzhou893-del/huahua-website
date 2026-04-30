@@ -2,7 +2,26 @@
    花叔心理 · JavaScript
    ======================================== */
 
-// Mobile nav toggle
+// ===== Hero 照片轮播 =====
+(function() {
+    const carousel = document.getElementById('heroCarousel');
+    if (!carousel) return;
+    const photos = carousel.querySelectorAll('.hero-photo');
+    if (photos.length < 2) return;
+    
+    let current = 0;
+    const interval = 4000; // 4秒切换
+    
+    function nextSlide() {
+        photos[current].classList.remove('active');
+        current = (current + 1) % photos.length;
+        photos[current].classList.add('active');
+    }
+    
+    setInterval(nextSlide, interval);
+})();
+
+// ===== Mobile nav toggle =====
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 
@@ -11,14 +30,12 @@ if (navToggle && navMenu) {
         navMenu.classList.toggle('active');
     });
 
-    // Close menu on link click
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('active');
         });
     });
 
-    // Close menu on outside click
     document.addEventListener('click', (e) => {
         if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
             navMenu.classList.remove('active');
@@ -26,7 +43,7 @@ if (navToggle && navMenu) {
     });
 }
 
-// Navbar shadow on scroll
+// ===== Navbar shadow =====
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
@@ -36,7 +53,7 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Smooth scroll for anchor links
+// ===== Smooth scroll =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -47,21 +64,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Gallery modal
-const galleryItems = document.querySelectorAll('.gallery-item img');
+// ===== Modal for certificates =====
 const modal = document.getElementById('galleryModal');
 const modalImg = document.getElementById('modalImg');
 const modalClose = document.querySelector('.modal-close');
 
-if (galleryItems.length && modal && modalImg) {
-    galleryItems.forEach(img => {
-        img.addEventListener('click', () => {
-            modal.classList.add('active');
-            modalImg.src = img.src;
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
+if (modal && modalImg && modalClose) {
     function closeModal() {
         modal.classList.remove('active');
         document.body.style.overflow = '';
@@ -76,7 +84,7 @@ if (galleryItems.length && modal && modalImg) {
     });
 }
 
-// Scroll reveal animation
+// ===== Scroll reveal =====
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -91,9 +99,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe cards and sections
 document.querySelectorAll(
-    '.about-card, .service-card, .case-card, .project-card, .contact-card, .cred-item, .award-item'
+    '.about-card, .service-card, .case-card, .project-card, .contact-card'
 ).forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
@@ -101,7 +108,7 @@ document.querySelectorAll(
     observer.observe(el);
 });
 
-// Contact form
+// ===== Contact form =====
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
@@ -112,17 +119,9 @@ if (contactForm) {
         submitBtn.textContent = '提交中...';
         submitBtn.disabled = true;
 
-        const formData = {
-            name: document.getElementById('name').value,
-            contact: document.getElementById('contactWay').value,
-            message: document.getElementById('message').value
-        };
-
-        // Since this is a static site, for now just show a success message
-        // In production, you'd send this to a backend or email service
         setTimeout(() => {
             submitBtn.textContent = '✓ 已提交，我会尽快联系您！';
-            submitBtn.style.background = 'linear-gradient(135deg, #7A9E7E, #5A7E5E)';
+            submitBtn.style.background = 'linear-gradient(135deg, #E8893A, #CC7730)';
             
             setTimeout(() => {
                 submitBtn.textContent = originalText;

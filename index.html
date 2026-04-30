@@ -62,7 +62,14 @@
                 <a href="#contact" class="btn btn-primary">预约咨询 →</a>
             </div>
             <div class="hero-image">
-                <img src="images/hero.jpg" alt="周扬 · 花叔心理" class="hero-photo">
+                <div class="hero-carousel" id="heroCarousel">
+                    <img src="images/hero.jpg" alt="周扬 · 花叔心理" class="hero-photo active">
+                    <img src="images/outdoor.jpg" alt="周扬" class="hero-photo">
+                    <img src="images/side.jpg" alt="周扬" class="hero-photo">
+                    <img src="images/activity1.jpg" alt="活动中的周扬" class="hero-photo">
+                    <img src="images/activity2.jpg" alt="活动中的周扬" class="hero-photo">
+                    <img src="images/award.jpg" alt="周扬" class="hero-photo">
+                </div>
                 <div class="hero-image-decoration"></div>
             </div>
         </div>
@@ -297,6 +304,13 @@
                                 <p>武志红 · 李松蔚 · 陈海贤 · 徐凯文 · 王立铭等心理课程</p>
                             </div>
                         </div>
+                        <div class="cred-item" style="border-left: 3px solid var(--primary); padding-left: 12px;">
+                            <div class="cred-icon">✅</div>
+                            <div>
+                                <h4>国家二级心理咨询师</h4>
+                                <p>人社部认证 · 2016 年考取</p>
+                            </div>
+                        </div>
                     </div>
 
                     <h3 class="exp-column-title" style="margin-top: 2rem;">🏆 荣誉奖项</h3>
@@ -338,26 +352,27 @@
                         </div>
                     </div>
 
-                    <h3 class="exp-column-title" style="margin-top: 2rem;">📜 专业资质</h3>
-                    <div class="cred-list" style="margin-bottom: 1.5rem;">
-                        <div class="cred-item">
-                            <div class="cred-icon">✅</div>
-                            <div>
-                                <h4>国家二级心理咨询师</h4>
-                                <p>人社部认证（证书编号已脱敏）</p>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 class="exp-column-title" style="margin-top: 2rem;">📜 资质证书</h3>
                     <div class="cert-section" style="margin-top: 1rem;">
-                        <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;">
-                            <div>
-                                <img src="images/certificate.jpg" alt="专业资质证书" class="cert-image" style="width: 100%; max-width: 380px; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer;" onclick="openModal(this.src)">
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+                            <div style="flex: 0 0 auto;">
+                                <img src="images/certificate.jpg" alt="国家二级心理咨询师证书" class="cert-image" style="height: 200px; width: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer;" onclick="openModal(this.src)">
+                                <p style="font-size: 0.78rem; text-align: center; margin-top: 4px; color: var(--text-light);">国家二级 · 正面</p>
                             </div>
-                            <div>
-                                <img src="images/certificate2.jpg" alt="专业资质证书" class="cert-image" style="width: 100%; max-width: 380px; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer;" onclick="openModal(this.src)">
+                            <div style="flex: 0 0 auto;">
+                                <img src="images/certificate3.jpg" alt="国家二级心理咨询师证书" class="cert-image" style="height: 200px; width: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer;" onclick="openModal(this.src)">
+                                <p style="font-size: 0.78rem; text-align: center; margin-top: 4px; color: var(--text-light);">国家二级 · 另一面</p>
+                            </div>
+                            <div style="flex: 0 0 auto;">
+                                <img src="images/certificate2.jpg" alt="专业资质证书" class="cert-image" style="height: 200px; width: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer;" onclick="openModal(this.src)">
+                                <p style="font-size: 0.78rem; text-align: center; margin-top: 4px; color: var(--text-light);">专业资质证书</p>
+                            </div>
+                            <div style="flex: 0 0 auto;">
+                                <img src="images/certificate4.jpg" alt="专业培训证书" class="cert-image" style="height: 200px; width: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer;" onclick="openModal(this.src)">
+                                <p style="font-size: 0.78rem; text-align: center; margin-top: 4px; color: var(--text-light);">专业培训结业</p>
                             </div>
                         </div>
-                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 8px; text-align: center;">专业资质证书（已做脱敏处理）</p>
+                        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; text-align: center;">点击可放大查看 · 已做脱敏处理</p>
                     </div>
                 </div>
             </div>
@@ -373,32 +388,32 @@
             </div>
             <div class="projects-grid">
                 <div class="project-card">
-                    <div class="project-img">
-                        <img src="images/activity4.jpg" alt="天府夜校活动">
+                    <div class="project-img project-placeholder" style="background: linear-gradient(135deg, #C4956A22, #D4A57444); display: flex; align-items: center; justify-content: center; min-height: 200px;">
+                        <span style="font-size: 3rem;">🌙</span>
                     </div>
                     <div class="project-info">
                         <div class="project-tag">联合创始人</div>
-                        <h3>🌙 天府夜校</h3>
+                        <h3>天府夜校</h3>
                         <p>基于社区、商业空间、技能兴趣三方共建的社区活动平台。2 年时间完成 200+ 场活动交付，建立 1000+ 人社群。与成都悠方、仁和新城、环球中心、金牛凯德等商业体完成整年深度合作。</p>
                     </div>
                 </div>
                 <div class="project-card">
-                    <div class="project-img">
-                        <img src="images/activity5.jpg" alt="企业心理服务">
+                    <div class="project-img project-placeholder" style="background: linear-gradient(135deg, #C4956A22, #7A9E7E44); display: flex; align-items: center; justify-content: center; min-height: 200px;">
+                        <span style="font-size: 3rem;">🏢</span>
                     </div>
                     <div class="project-info">
                         <div class="project-tag">企业服务</div>
-                        <h3>🏢 企业心理咨询服务</h3>
+                        <h3>企业心理咨询服务</h3>
                         <p>为卓达数控等企业员工提供系统性心理健康服务，包括个体咨询、职业辅导、团队建设及危机干预支持全流程服务。完成心理健康需求调研分析，识别组织中心理健康风险领域。</p>
                     </div>
                 </div>
                 <div class="project-card">
-                    <div class="project-img">
-                        <img src="images/activity2.jpg" alt="花叔心理">
+                    <div class="project-img project-placeholder" style="background: linear-gradient(135deg, #D4A57444, #C4956A22); display: flex; align-items: center; justify-content: center; min-height: 200px;">
+                        <span style="font-size: 3rem;">🌸</span>
                     </div>
                     <div class="project-info">
                         <div class="project-tag">个人品牌</div>
-                        <h3>🌸 "花叔心理" 品牌</h3>
+                        <h3>"花叔心理" 品牌</h3>
                         <p>创立个人品牌"花叔心理"，独立完成科普视频选题、脚本、拍摄、剪辑全流程。通过新媒体传播心理健康知识，让更多人了解心理学、走进心理咨询。</p>
                     </div>
                 </div>
@@ -414,22 +429,6 @@
                 <p class="quote-text">每个人都有成长的潜能。当一个人被真正看见、被理解、被接纳时，改变就会自然发生。</p>
                 <cite class="quote-author">—— 花叔 · 周扬</cite>
             </blockquote>
-        </div>
-    </section>
-
-    <!-- Activity Gallery -->
-    <section class="section gallery" id="gallery">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Moments</span>
-                <h2 class="section-title">活动纪实</h2>
-            </div>
-            <div class="gallery-grid">
-                <div class="gallery-item"><img src="images/activity1.jpg" alt="活动纪实" loading="lazy"></div>
-                <div class="gallery-item"><img src="images/activity3.jpg" alt="活动纪实" loading="lazy"></div>
-                <div class="gallery-item"><img src="images/activity6.jpg" alt="活动纪实" loading="lazy"></div>
-                <div class="gallery-item"><img src="images/outdoor.jpg" alt="活动纪实" loading="lazy"></div>
-            </div>
         </div>
     </section>
 

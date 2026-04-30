@@ -4,17 +4,17 @@
    ======================================== */
 
 :root {
-    --primary: #C4956A;
-    --primary-light: #E8D5C0;
-    --primary-dark: #A67C52;
-    --secondary: #7A9E7E;
-    --secondary-light: #C8DDCB;
-    --accent: #D4A574;
+    --primary: #E8893A;       /* 暖橙 */
+    --primary-light: #F5D6B8;
+    --primary-dark: #CC7730;
+    --secondary: #E8893A;
+    --secondary-light: #F5D6B8;
+    --accent: #E8893A;
 
-    --bg-white: #FFFBFA;
+    --bg-white: #FFFBF8;
     --bg-warm: #FDF6F0;
     --bg-cream: #F5EDE6;
-    --bg-section: #F9F3EC;
+    --bg-section: #FFF8F2;
 
     --text-dark: #2C2418;
     --text-body: #4A3F35;
@@ -196,13 +196,26 @@ a:hover { color: var(--primary); }
     display: flex; justify-content: center;
 }
 
-.hero-photo {
+.hero-carousel {
+    position: relative;
     width: 380px; height: 380px;
+    z-index: 1;
+}
+
+.hero-carousel .hero-photo {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--primary-light);
     box-shadow: var(--shadow-lg);
-    position: relative; z-index: 1;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+.hero-carousel .hero-photo.active {
+    opacity: 1;
 }
 
 .hero-image-decoration {
