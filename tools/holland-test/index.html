@@ -2,807 +2,554 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>霍兰德职业兴趣测试 | 专业版</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>霍兰德职业兴趣测试</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --primary: #4F46E5;
-    --primary-light: #818CF8;
-    --primary-dark: #3730A3;
-    --bg: #F8FAFC;
-    --card: #FFFFFF;
-    --text: #1E293B;
-    --text-secondary: #64748B;
-    --border: #E2E8F0;
-    --success: #22C55E;
-    --warning: #F59E0B;
-    --radius: 16px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-    background: #F8FAFC; background: var(--bg);
-    color: #1E293B; color: var(--text);
-    min-height: 100vh;
-    line-height: 1.6;
-  }
-  .container { max-width: 640px; margin: 0 auto; padding: 16px; }
-  #page-home { display: block; }
-  .page { display: none; }
-  .page.active { display: block; animation: fadeIn 0.4s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  .card {
-    background: #FFFFFF; background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 28px 24px;
-    margin-bottom: 20px;
-  }
-  .header-icon { font-size: 48px; text-align: center; margin-bottom: 12px; }
-  .title { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 8px; line-height: 1.3; }
-  .subtitle { font-size: 15px; color: #64748B; color: var(--text-secondary); text-align: center; margin-bottom: 20px; line-height: 1.5; }
-  .meta-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 16px 0 24px; }
-  .meta-item {
-    background: #EEF2FF; color: #4F46E5; color: var(--primary); padding: 8px 16px; border-radius: 20px;
-    font-size: 14px; font-weight: 500;
-  }
-  .btn {
-    display: block; width: 100%; padding: 14px; border: none; border-radius: 12px;
-    font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-    text-align: center;
-  }
-  .btn-primary { background: var(--primary); color: white; }
-  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
-  .btn-outline { background: transparent; color: #4F46E5; color: var(--primary); border: 2px solid var(--primary); }
-  .btn-outline:hover { background: #EEF2FF; }
-  .btn-success { background: var(--success); color: white; }
-  .btn-success:hover { background: #16A34A; }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-  .btn-sm { padding: 10px 20px; width: auto; display: inline-block; }
-  .form-group { margin-bottom: 16px; }
-  .form-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #1E293B; color: var(--text); }
-  .form-group select, .form-group input {
-    width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px;
-    font-size: 15px; background: white; transition: border-color 0.2s;
-  }
-  .form-group select:focus, .form-group input:focus { outline: none; border-color: #4F46E5; color: var(--primary); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .progress-container { margin: 16px 0 24px; }
-  .progress-bar-bg { height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden; }
-  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-light)); border-radius: 4px; transition: width 0.5s ease; }
-  .progress-text { display: flex; justify-content: space-between; font-size: 13px; color: #64748B; color: var(--text-secondary); margin-top: 6px; }
-  .question-num { font-size: 13px; color: #64748B; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500; }
-  .question-text { font-size: 17px; font-weight: 600; margin-bottom: 20px; line-height: 1.5; }
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option {
-    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
-    border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer;
-    transition: all 0.2s; font-size: 15px;
-  }
-  .option:hover { border-color: var(--primary-light); background: #F8FAFF; }
-  .option.selected { border-color: #4F46E5; color: var(--primary); background: #EEF2FF; }
-  .option input[type="radio"] { display: none; }
-  .option .dot {
-    width: 20px; height: 20px; border-radius: 50%; border: 2px solid #CBD5E1;
-    flex-shrink: 0; transition: all 0.2s; display: flex; align-items: center; justify-content: center;
-  }
-  .option.selected .dot { border-color: #4F46E5; color: var(--primary); background: var(--primary); }
-  .option.selected .dot::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: white; display: block; }
-  .nav-buttons { display: flex; gap: 12px; margin-top: 20px; }
-  .nav-buttons .btn { flex: 1; }
-  .radar-container { position: relative; width: 260px; height: 260px; margin: 20px auto; }
-  .radar-container canvas { width: 100%; height: 100%; }
-  .score-item { margin-bottom: 14px; }
-  .score-label { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
-  .score-label .name { font-weight: 600; }
-  .score-label .val { color: #4F46E5; color: var(--primary); font-weight: 700; }
-  .score-bar-bg { height: 10px; background: #E2E8F0; border-radius: 5px; overflow: hidden; }
-  .score-bar { height: 100%; border-radius: 5px; transition: width 1s ease; }
-  .score-bar.r { background: #EF4444; }
-  .score-bar.i { background: #3B82F6; }
-  .score-bar.a { background: #F59E0B; }
-  .score-bar.s { background: #22C55E; }
-  .score-bar.e { background: #8B5CF6; }
-  .score-bar.c { background: #EC4899; }
-  .code-badge {
-    display: inline-flex; gap: 8px; padding: 10px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    color: white; border-radius: 12px; font-size: 28px; font-weight: 800; letter-spacing: 4px;
-    margin: 12px 0;
-  }
-  .type-card { padding: 16px; border-radius: 12px; margin-bottom: 14px; }
-  .type-card.i { background: #EFF6FF; border-left: 4px solid #3B82F6; }
-  .type-card.s { background: #F0FDF4; border-left: 4px solid #22C55E; }
-  .type-card.e { background: #F5F3FF; border-left: 4px solid #8B5CF6; }
-  .type-card.r { background: #FEF2F2; border-left: 4px solid #EF4444; }
-  .type-card.a { background: #FFFBEB; border-left: 4px solid #F59E0B; }
-  .type-card.c { background: #FDF2F8; border-left: 4px solid #EC4899; }
-  .type-card h4 { font-size: 16px; margin-bottom: 6px; }
-  .type-card ul { padding-left: 16px; font-size: 14px; color: #64748B; color: var(--text-secondary); }
-  .type-card ul li { margin-bottom: 3px; }
-  .advantages { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
-  .advantage { padding: 12px; border-radius: 10px; font-size: 14px; }
-  .advantage.good { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
-  .advantage.bad { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
-  .stars { color: #F59E0B; font-size: 14px; letter-spacing: 2px; }
-  .job-list { margin: 16px 0; }
-  .job-category { margin-bottom: 16px; }
-  .job-category h4 { font-size: 15px; margin-bottom: 8px; }
-  .job-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .job-tag { padding: 6px 14px; border-radius: 20px; font-size: 13px; background: #F1F5F9; color: #1E293B; color: var(--text); }
-  .job-tag.best { background: #EEF2FF; color: #4F46E5; color: var(--primary); font-weight: 600; }
-  .job-tag.caution { background: #FEF2F2; color: #DC2626; text-decoration: line-through; }
-  .industry-tiers { margin: 16px 0; }
-  .tier { margin-bottom: 12px; }
-  .tier h4 { font-size: 14px; margin-bottom: 6px; }
-  .tier-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tier-tag { padding: 5px 12px; border-radius: 16px; font-size: 13px; background: #F1F5F9; }
-  .tier-tag.t1 { background: #EEF2FF; color: #4F46E5; color: var(--primary); font-weight: 600; }
-  .tier-tag.t2 { background: #F0FDF4; color: #166534; }
-  .advice-list { list-style: none; padding: 0; margin: 16px 0; counter-reset: advice; }
-  .advice-list li {
-    padding: 12px 16px; margin-bottom: 8px; background: #F8FAFC;
-    border-radius: 10px; font-size: 14px; border: 1px solid var(--border);
-    padding-left: 44px; position: relative;
-  }
-  .advice-list li::before {
-    content: counter(advice); counter-increment: advice;
-    position: absolute; left: 12px; top: 12px;
-    width: 24px; height: 24px; border-radius: 50%; background: var(--primary);
-    color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
-  }
-  .report-section { margin-bottom: 20px; }
-  .report-section h3 { font-size: 16px; margin-bottom: 10px; color: #4F46E5; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-  .share-buttons { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
-  .share-buttons .btn { flex: 1; min-width: 120px; }
-  .instruction-box {
-    background: #EEF2FF; border-radius: 12px; padding: 16px; margin: 16px 0 20px;
-    font-size: 14px; color: #1E293B; color: var(--text);
-  }
-  .instruction-box ul { padding-left: 16px; margin-top: 6px; }
-  .instruction-box ul li { margin-bottom: 4px; }
-  .quote-text {
-    font-size: 18px; font-weight: 600; text-align: center; color: #4F46E5; color: var(--primary);
-    padding: 20px; background: #EEF2FF; border-radius: 12px; margin: 20px 0; line-height: 1.5;
-  }
-  .toast {
-    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-    background: #1E293B; color: white; padding: 12px 24px; border-radius: 10px;
-    font-size: 14px; box-shadow: var(--shadow-lg); z-index: 1000;
-    animation: toastIn 0.3s ease;
-  }
-  @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spinner { width: 48px; height: 48px; border: 4px solid var(--border); border-top-color: #4F46E5; color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
-  @media (max-width: 480px) {
-    .container { padding: 12px; }
-    .card { padding: 20px 16px; }
-    .title { font-size: 22px; }
-    .form-row { grid-template-columns: 1fr; }
-    .advantages { grid-template-columns: 1fr; }
-    .radar-container { width: 200px; height: 200px; }
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #F8FAFC; color: #1E293B; line-height: 1.6; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 12px; }
+.pg { display: none; }
+.pg.sel { display: block; }
+.card { background: #FFF; border-radius: 16px; padding: 24px 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.btn { display: inline-block; padding: 14px 36px; border-radius: 25px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; text-align: center; }
+.btn-p { background: #4F46E5; color: #FFF; }
+.btn-o { background: #FFF; color: #4F46E5; border: 2px solid #E2E8F0; }
+.btn-s { background: #22C55E; color: #FFF; }
+.btn-sm { padding: 10px 24px; font-size: 14px; }
+.btn:disabled { opacity: 0.4; }
+.tc { text-align: center; }
+.mt8 { margin-top: 8px; }
+.mt12 { margin-top: 12px; }
+.mt16 { margin-top: 16px; }
+.mt20 { margin-top: 20px; }
+.mb8 { margin-bottom: 8px; }
+.mb12 { margin-bottom: 12px; }
+.mb16 { margin-bottom: 16px; }
+.fs20 { font-size: 20px; }
+.fs14 { font-size: 14px; }
+.fw7 { font-weight: 700; }
+.c-secondary { color: #64748B; }
+.opt { padding: 14px 16px; border: 2px solid #E2E8F0; border-radius: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+.opt.sel { border-color: #4F46E5; background: #EEF2FF; }
+.dot { width: 20px; height: 20px; border: 2px solid #CBD5E1; border-radius: 50%; flex-shrink: 0; }
+.opt.sel .dot { border-color: #4F46E5; background: #4F46E5; }
+.progress-bg { height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: #4F46E5; border-radius: 4px; transition: width 0.3s; }
+.opt-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+.tag { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; margin: 2px; }
+.tag.best { background: #DCFCE7; color: #166534; }
+.tag.dev { background: #FEF9C3; color: #854D0E; }
+.tag.cau { background: #FEE2E2; color: #991B1B; }
+.tier-tag { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; margin: 2px; }
+.tier-tag.t1 { background: #FEF3C7; color: #92400E; }
+.tier-tag.t2 { background: #E0E7FF; color: #3730A3; }
+.score-bar-bg { height: 10px; background: #E2E8F0; border-radius: 5px; overflow: hidden; margin-top: 4px; }
+.score-bar { height: 100%; border-radius: 5px; transition: width 1s; }
+.sb-r { background: #EF4444; }
+.sb-i { background: #3B82F6; }
+.sb-a { background: #F59E0B; }
+.sb-s { background: #22C55E; }
+.sb-e { background: #8B5CF6; }
+.sb-c { background: #EC4899; }
+.code-badge { display: inline-block; font-size: 42px; font-weight: 900; color: #4F46E5; background: #EEF2FF; padding: 12px 32px; border-radius: 16px; margin: 12px 0; }
+.radar-box { text-align: center; margin: 16px 0; }
+.radar-box canvas { max-width: 100%; }
+.share-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; }
+.quote { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.advice-list { padding-left: 20px; }
+.advice-list li { margin-bottom: 8px; line-height: 1.5; }
+.form-label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+.form-sel { width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 12px; font-size: 15px; background: #FFF; }
+.form-row { display: flex; gap: 10px; }
+.form-row > div { flex: 1; }
+.report-sec { margin-bottom: 20px; }
+.report-sec h3 { font-size: 16px; margin-bottom: 8px; }
+.c-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; }
+.spinner { width: 40px; height: 40px; border: 4px solid #E2E8F0; border-top-color: #4F46E5; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1E293B; color: #FFF; padding: 12px 24px; border-radius: 12px; font-size: 14px; z-index: 999; }
 </style>
 </head>
 <body>
-<!-- 确保页面至少有可见内容 -->
-<div id="loading-banner" style="padding:10px;text-align:center;font-size:14px;color:#666;">霍兰德职业兴趣测试加载中...</div>
-<script>setTimeout(function(){document.getElementById('loading-banner').style.display='none';},2000);</script>
-<div class="container" id="app">
 
-<div class="page active" id="page-home">
-  <div class="card">
-    <div class="header-icon">🔍</div>
-    <div class="title">霍兰德职业兴趣测试<br>专业版</div>
-    <div class="subtitle">找到最适合你的职业方向</div>
-    <div class="meta-grid">
-      <span class="meta-item">📝 90道题</span>
-      <span class="meta-item">⏱ 约8分钟</span>
-      <span class="meta-item">📊 6维分析</span>
+<div class="wrap" id="app">
+
+<!-- 首页 -->
+<div class="pg sel" id="p0">
+  <div class="card tc">
+    <div style="font-size:48px;">🔍</div>
+    <div class="fs20 fw7" style="margin:12px 0 4px;">霍兰德职业兴趣测试</div>
+    <div class="c-secondary fs14" style="margin-bottom:16px;">找到最适合你的职业方向</div>
+    <div style="display:flex;justify-content:center;gap:8px;margin-bottom:20px;">
+      <span style="background:#EEF2FF;color:#4F46E5;padding:6px 14px;border-radius:20px;font-size:13px;">📝 90道题</span>
+      <span style="background:#EEF2FF;color:#4F46E5;padding:6px 14px;border-radius:20px;font-size:13px;">⏱ 约8分钟</span>
+      <span style="background:#EEF2FF;color:#4F46E5;padding:6px 14px;border-radius:20px;font-size:13px;">📊 6维分析</span>
     </div>
-    <div class="instruction-box">
-      <strong>帮你发现：</strong>
-      <ul>
-        <li>✓ 最匹配的职业类型</li>
-        <li>✓ 工作中的优势与盲区</li>
-        <li>✓ 适合发展的行业方向</li>
-        <li>✓ 未来职业规划建议</li>
-      </ul>
+    <div style="background:#F8FAFC;border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;">
+      <div style="font-weight:600;margin-bottom:8px;">帮你发现：</div>
+      <div>✓ 最匹配的职业类型</div>
+      <div>✓ 工作中的优势与盲区</div>
+      <div>✓ 适合发展的行业方向</div>
+      <div>✓ 未来职业规划建议</div>
     </div>
-    <div class="quote-text">很多人不是能力不够，<br>而是选错了赛道。</div>
-    <div class="subtitle" style="margin-bottom:24px;">
-      国际通用的霍兰德职业兴趣测试，<br>从兴趣倾向角度分析你的职业人格。
-    </div>
-    <button class="btn btn-primary" data-action="goto:page-info">开始测试 →</button>
+    <div style="font-style:italic;color:#64748B;margin-bottom:20px;font-size:15px;">很多人不是能力不够，<br>而是选错了赛道。</div>
+    <button class="btn btn-p" onclick="showInfo()">开始测试 →</button>
   </div>
 </div>
 
-<div class="page" id="page-info">
+<!-- 信息页 -->
+<div class="pg" id="p1">
   <div class="card">
-    <div class="title" style="font-size:20px;">进入测试前</div>
-    <div class="subtitle">填写基本信息，生成你的个性化报告</div>
+    <div class="fs20 fw7 mb16 tc">进入测试前</div>
+    <div class="c-secondary fs14 tc mb16">填写基本信息，生成你的个性化报告</div>
     <div class="form-row">
-      <div class="form-group">
-        <label>性别</label>
-        <select id="gender">
-          <option value="未填写">请选择</option>
-          <option value="男">男</option>
-          <option value="女">女</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>年龄</label>
-        <select id="age">
-          <option value="未填写">请选择</option>
-          <option value="18岁以下">18岁以下</option>
-          <option value="18-22岁">18-22岁</option>
-          <option value="23-28岁">23-28岁</option>
-          <option value="29-35岁">29-35岁</option>
-          <option value="36-45岁">36-45岁</option>
-          <option value="45岁以上">45岁以上</option>
-        </select>
-      </div>
+      <div><label class="form-label">性别</label><select class="form-sel" id="gender"><option>请选择</option><option>男</option><option>女</option></select></div>
+      <div><label class="form-label">年龄</label><select class="form-sel" id="age"><option>请选择</option><option>18岁以下</option><option>18-22岁</option><option>23-28岁</option><option>29-35岁</option><option>36-45岁</option><option>45岁以上</option></select></div>
     </div>
-    <div class="form-group">
-      <label>学历</label>
-      <select id="education">
-        <option value="未填写">请选择</option>
-        <option value="高中及以下">高中及以下</option>
-        <option value="大专">大专</option>
-        <option value="本科">本科</option>
-        <option value="硕士">硕士</option>
-        <option value="博士">博士</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>当前职业</label>
-      <select id="currentJob">
-        <option value="未填写">请选择</option>
-        <option value="在校学生">在校学生</option>
-        <option value="互联网/科技">互联网/科技</option>
-        <option value="教育/培训">教育/培训</option>
-        <option value="金融/咨询">金融/咨询</option>
-        <option value="医疗/健康">医疗/健康</option>
-        <option value="制造/工程">制造/工程</option>
-        <option value="政府/事业单位">政府/事业单位</option>
-        <option value="文化/传媒">文化/传媒</option>
-        <option value="销售/市场">销售/市场</option>
-        <option value="自由职业">自由职业</option>
-        <option value="其他">其他</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>工作年限</label>
-      <select id="workYears">
-        <option value="0年">请选择</option>
-        <option value="0年（学生）">0年（学生）</option>
-        <option value="1-3年">1-3年</option>
-        <option value="3-5年">3-5年</option>
-        <option value="5-10年">5-10年</option>
-        <option value="10年以上">10年以上</option>
-      </select>
-    </div>
-    <button class="btn btn-primary" data-action="startTest">开始答题 →</button>
+    <div class="mt12"><label class="form-label">学历</label><select class="form-sel" id="edu"><option>请选择</option><option>高中及以下</option><option>大专</option><option>本科</option><option>硕士</option><option>博士</option></select></div>
+    <div class="mt12"><label class="form-label">当前职业</label><select class="form-sel" id="job"><option>请选择</option><option>在校学生</option><option>互联网/科技</option><option>教育/培训</option><option>金融/咨询</option><option>医疗/健康</option><option>制造/工程</option><option>政府/事业单位</option><option>文化/传媒</option><option>销售/市场</option><option>自由职业</option><option>其他</option></select></div>
+    <div class="mt12"><label class="form-label">工作年限</label><select class="form-sel" id="year"><option>请选择</option><option>0年（学生）</option><option>1-3年</option><option>3-5年</option><option>5-10年</option><option>10年以上</option></select></div>
+    <button class="btn btn-p mt16" onclick="startTest()">开始答题 →</button>
   </div>
 </div>
 
-<div class="page" id="page-questions">
+<!-- 题目页 -->
+<div class="pg" id="p2">
   <div class="card">
-    <div class="progress-container">
-      <div class="progress-bar-bg"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
-      <div class="progress-text">
-        <span id="progressLabel">第 1 页 / 共 18 页</span>
-        <span id="progressPercent">0%</span>
-      </div>
+    <div class="progress-bg mb12"><div class="progress-fill" id="progBar" style="width:0%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:#64748B;margin-bottom:12px;">
+      <span id="progLabel">第 1 页 / 共 18 页</span>
+      <span id="progPct">0%</span>
     </div>
-    <div id="questionsContainer"></div>
-    <div class="nav-buttons">
-      <button class="btn btn-outline" id="prevBtn" data-action="prevPage" disabled>上一页</button>
-      <button class="btn btn-primary" id="nextBtn" data-action="nextPage">下一页</button>
+    <div id="qContainer"></div>
+    <div class="c-nav">
+      <button class="btn btn-o btn-sm" id="prevBtn" onclick="prevQ()" disabled>上一页</button>
+      <button class="btn btn-p btn-sm" id="nextBtn" onclick="nextQ()">下一页</button>
     </div>
   </div>
 </div>
 
-<div class="page" id="page-calc">
-  <div class="card" style="text-align:center; padding:60px 24px;">
-    <div style="font-size:48px; margin-bottom:16px;">🔮</div>
-    <div class="title" style="font-size:20px;">正在分析你的结果...</div>
-    <div class="subtitle" style="margin-top:8px;">正在基于你的答案计算六维职业兴趣分数</div>
-    <div style="margin-top:24px;"><div class="spinner"></div></div>
-    <div style="margin-top:16px; font-size:14px; color:var(--text-secondary);" id="calcStatus">正在统计各维度分数...</div>
+<!-- 计算中 -->
+<div class="pg" id="p3">
+  <div class="card tc" style="padding:60px 20px;">
+    <div style="font-size:48px;margin-bottom:16px;">🔮</div>
+    <div class="fs20 fw7">正在分析你的结果...</div>
+    <div class="c-secondary fs14 mt8">正在基于你的答案计算六维职业兴趣分数</div>
+    <div class="mt20"><div class="spinner"></div></div>
   </div>
 </div>
 
-<div class="page" id="page-result">
+<!-- 结果总览 -->
+<div class="pg" id="p4">
   <div class="card">
-    <div class="title" style="font-size:20px;">你的职业兴趣代码</div>
-    <div style="text-align:center;">
-      <div class="code-badge" id="codeBadge">---</div>
-      <div id="codeLabel" class="subtitle">---</div>
-    </div>
-    <div class="radar-container"><canvas id="radarCanvas" width="260" height="260"></canvas></div>
-    <div id="scoreList"></div>
+    <div class="fs20 fw7 tc mb16">你的职业兴趣代码</div>
+    <div class="tc"><div class="code-badge" id="rCode">---</div></div>
+    <div class="tc c-secondary fs14" id="rCodeName">---</div>
+    <div class="radar-box"><canvas id="radarC" width="260" height="260"></canvas></div>
+    <div id="rList"></div>
   </div>
-  <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" data-action="goto:page-personality">查看人格解读 →</button>
-  </div>
+  <div class="tc mb16"><button class="btn btn-p btn-sm" onclick="g('p5')">查看人格解读 →</button></div>
 </div>
 
-<div class="page" id="page-personality">
+<!-- 人格 -->
+<div class="pg" id="p5">
+  <div class="card"><div class="fs20 fw7 tc mb16">你的人格解读</div><div id="rPersonality"></div></div>
+  <div class="tc mb16"><button class="btn btn-p btn-sm" onclick="g('p6')">查看职业匹配 →</button></div>
+</div>
+
+<!-- 职业 -->
+<div class="pg" id="p6">
+  <div class="card"><div class="fs20 fw7 tc mb16">职业匹配建议</div><div id="rJobs"></div></div>
+  <div class="tc mb16"><button class="btn btn-p btn-sm" onclick="g('p7')">查看行业推荐 →</button></div>
+</div>
+
+<!-- 行业 -->
+<div class="pg" id="p7">
+  <div class="card"><div class="fs20 fw7 tc mb16">行业推荐</div><div id="rIndustry"></div></div>
+  <div class="tc mb16"><button class="btn btn-p btn-sm" onclick="g('p8')">查看成长建议 →</button></div>
+</div>
+
+<!-- 建议 -->
+<div class="pg" id="p8">
+  <div class="card"><div class="fs20 fw7 tc mb16">成长建议</div><div id="rAdvice"></div></div>
+  <div class="tc mb16"><button class="btn btn-p btn-sm" onclick="g('p9')">查看完整报告 →</button></div>
+</div>
+
+<!-- 报告 -->
+<div class="pg" id="p9">
   <div class="card">
-    <div class="title" style="font-size:20px;">你的人格解读</div>
-    <div id="personalityContent"></div>
+    <div class="fs20 fw7 tc mb16">你的职业兴趣报告</div>
+    <div class="c-secondary fs14 tc mb16"><span id="rptName">用户</span> 的霍兰德职业兴趣测评报告</div>
+    <div class="report-sec"><h3>🔑 霍兰德代码</h3><div style="font-size:24px;font-weight:800;color:#4F46E5;" id="rptCode"></div></div>
+    <div class="report-sec"><h3>📊 六维度分析</h3><div id="rptScores"></div></div>
+    <div class="report-sec"><h3>✅ 性格优势</h3><div id="rptStr"></div></div>
+    <div class="report-sec"><h3>⚠️ 性格风险</h3><div id="rptWeak"></div></div>
+    <div class="report-sec"><h3>💼 职业推荐</h3><div id="rptJobs"></div></div>
+    <div class="report-sec"><h3>🏢 行业推荐</h3><div id="rptInd"></div></div>
+    <div class="report-sec"><h3>📈 成长建议</h3><div id="rptAdv"></div></div>
   </div>
-  <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" data-action="goto:page-jobs">查看职业匹配 →</button>
-  </div>
-</div>
-
-<div class="page" id="page-jobs">
-  <div class="card">
-    <div class="title" style="font-size:20px;">职业匹配建议</div>
-    <div id="jobContent"></div>
-  </div>
-  <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" data-action="goto:page-industry">查看行业推荐 →</button>
-  </div>
-</div>
-
-<div class="page" id="page-industry">
-  <div class="card">
-    <div class="title" style="font-size:20px;">行业推荐</div>
-    <div id="industryContent"></div>
-  </div>
-  <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" data-action="goto:page-advice">查看成长建议 →</button>
+  <div class="share-btns">
+    <button class="btn btn-s btn-sm" onclick="fmtPrint()">📥 下载PDF</button>
+    <button class="btn btn-o btn-sm" onclick="saveLocal()">💾 保存结果</button>
+    <button class="btn btn-p btn-sm" onclick="shareIt()">📤 分享</button>
+    <button class="btn btn-o btn-sm" onclick="g('p0')">🔄 重新测试</button>
   </div>
 </div>
 
-<div class="page" id="page-advice">
-  <div class="card">
-    <div class="title" style="font-size:20px;">成长建议</div>
-    <div id="adviceContent"></div>
-  </div>
-  <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" data-action="goto:page-report">查看完整报告 →</button>
-  </div>
-</div>
-
-<div class="page" id="page-report">
-  <div class="card">
-    <div class="title" style="font-size:20px;">你的职业兴趣报告</div>
-    <div class="subtitle" style="margin-bottom:16px;">
-      <span id="reportName">用户</span> 的霍兰德职业兴趣测评报告
-    </div>
-    <div class="report-section">
-      <h3>🔑 霍兰德代码</h3>
-      <div style="font-size:24px; font-weight:800; color:var(--primary);" id="reportCode"></div>
-    </div>
-    <div class="report-section">
-      <h3>📊 六维度分析</h3>
-      <div id="reportScores"></div>
-    </div>
-    <div class="report-section">
-      <h3>✅ 性格优势</h3>
-      <div id="reportStrengths"></div>
-    </div>
-    <div class="report-section">
-      <h3>⚠️ 性格风险</h3>
-      <div id="reportWeaknesses"></div>
-    </div>
-    <div class="report-section">
-      <h3>💼 职业推荐</h3>
-      <div id="reportJobs"></div>
-    </div>
-    <div class="report-section">
-      <h3>🏢 行业推荐</h3>
-      <div id="reportIndustries"></div>
-    </div>
-    <div class="report-section">
-      <h3>📈 成长建议</h3>
-      <div id="reportAdvice"></div>
-    </div>
-  </div>
-  <div class="share-buttons">
-    <button class="btn btn-success" data-action="downloadReport">📥 下载PDF报告</button>
-    <button class="btn btn-outline" data-action="saveResult">💾 保存测评结果</button>
-    <button class="btn btn-primary" data-action="shareResult">📤 分享好友</button>
-    <button class="btn btn-outline" data-action="goto:page-home">🔄 重新测试</button>
-  </div>
-</div>
-
-</div>
+</div><!-- /wrap -->
 
 <script>
-const QUESTIONS = [
+// --- 数据 ---
+var Q = [
   [1,"强壮而敏捷的身体对我很重要","R"],[2,"我必须彻底地了解事情的真相","I"],[3,"我的心情受音乐、色彩和美丽事物的影响极大","A"],[4,"和他人的关系丰富了我的生命并使它有意义","S"],[5,"我自信会成功","E"],[6,"我做事必须有清楚的指引","C"],[7,"我擅长于自己制作、修理东西","R"],[8,"我可以花很长的时间去想通事情的道理","I"],[9,"我重视美丽的环境","A"],[10,"我愿意花时间帮别人解决个人危机","S"],[11,"我喜欢竞争","E"],[12,"我在开始一个计划前会花很多时间去计划","C"],[13,"我喜欢使用双手做事","R"],[14,"探索新构思使我满意","I"],[15,"我是寻求新方法来发挥我的创造力","A"],[16,"我认为能把自己的焦虑和别人分担是很重要的","S"],[17,"成为群体中的关键任务执行者，对我很重要","E"],[18,"我对于自己能重视工作中的所有细节感到骄傲","C"],[19,"我不在乎工作把手弄脏","R"],[20,"我认为教育是个发展及磨练脑力的终身学习过程","I"],[21,"我喜欢非正式的穿着，尝试新颜色和款式","A"],[22,"我常能体会到某人想要和他人沟通的需要","S"],[23,"我喜欢帮助别人不断改进","E"],[24,"我在决策时，通常不愿冒险","C"],[25,"我喜欢购买小零件，做成成品","R"],[26,"有时我长时间阅读，玩拼图游戏，冥想生命本质","I"],[27,"我有很强的想象力","A"],[28,"我喜欢帮助别人发挥天赋和才能","S"],[29,"我喜欢监督事情直至完工","E"],[30,"如果我面对一个新情景，会在事前做充分的准备","C"],[31,"我喜欢独立完成一项任务","R"],[32,"我渴望阅读或思考任何可以引发我好奇心的东西","I"],[33,"我喜欢尝试创新的概念","A"],[34,"如果我和别人摩擦，我会不断尝试化干戈为玉帛","S"],[35,"要成功就必须定高目标","E"],[36,"我喜欢为重大决策负责","C"],[37,"我喜欢直言不讳，不喜欢转弯抹角","R"],[38,"我在解决问题前，必须把问题进行彻底分析","I"],[39,"我喜欢重新布置我的环境，使他们与众不同","A"],[40,"我经常借着和别人交谈来解决自己的问题","S"],[41,"我常想起草一个计划，而由别人完成细节","E"],[42,"准时对我来说非常重要","C"],[43,"从事户外活动令我神清气爽","R"],[44,"我不断地问：为什么？","I"],[45,"我喜欢自己的工作能够抒发我的情绪和感觉","A"],[46,"我喜欢帮助别人找可以和他人相互关注的办法","S"],[47,"能够参与重大决策是件令人兴奋的事情","E"],[48,"我经常保持清洁，喜欢有条不紊","C"],[49,"我喜欢周边环境简单而实际","R"],[50,"我会不断地思索一个问题，直到找出答案为止","I"],[51,"大自然的美深深地触动我的灵魂","A"],[52,"亲密的人际关系对我很重要","S"],[53,"升迁和进步对我极重要","E"],[54,"当我把每日工作计划好时，我会较有安全感","C"],[55,"我不害怕过重工作负荷，且知道工作的重点","R"],[56,"我喜欢能使我思考、给我新观念的书","I"],[57,"我希望能看到艺术表演、戏剧及好的电影","A"],[58,"我对别人的情绪低潮相当的敏感","S"],[59,"能影响别人使我感到兴奋","E"],[60,"当我答应一件事时，我会竭尽监督所有细节","C"],[61,"我希望粗重的肢体工作不会伤害任何人","R"],[62,"我希望能学习所有使我感兴趣的科目","I"],[63,"我希望能做些与众不同的事","A"],[64,"我对别人的困难乐于伸出援手","S"],[65,"我愿意冒一点险以求进步","E"],[66,"当我遵循成规时，我感到安全","C"],[67,"我选车时，最先注意的是好的引擎","R"],[68,"我喜欢能刺激我思考的话","I"],[69,"当我从事创造性的事时，我会忘掉一切旧经验","A"],[70,"我对社会上有许多人需要帮助感到关注","S"],[71,"说服别人依计划行事是件有趣的事情","E"],[72,"我擅长于检查细节","C"],[73,"我通常知道如何应付紧急事件","R"],[74,"阅读新发现的书是件令人兴奋的事情","I"],[75,"我喜欢美丽、不平凡的东西","A"],[76,"我经常关心孤独、不友善的人","S"],[77,"我喜欢讨价还价","E"],[78,"我花钱时小心翼翼","C"],[79,"我用运动来保持强壮的身体","R"],[80,"我经常对大自然的奥秘感到好奇","I"],[81,"尝试不平凡的新事物是件相当有趣的事情","A"],[82,"当别人向我诉说他的困难时，我是个好听众","S"],[83,"做事失败了，我会再接再厉","E"],[84,"我需要确切地知道别人对我的要求是什么","C"],[85,"我喜欢把东西拆开，看看能否修理他们","R"],[86,"我喜欢研读所有的事实，再有逻辑地做出决定","I"],[87,"没有美丽事物的生活，对我而言是不可思议的","A"],[88,"人们经常告诉我他们的问题","S"],[89,"我常能借着资讯网络和别人取得联系","E"],[90,"小心谨慎地完成一件事是件有成就感的事情","C"]
 ];
 
-const TYPE_NAMES = {R:"现实型", I:"研究型", A:"艺术型", S:"社会型", E:"企业型", C:"常规型"};
-const TYPE_COLORS = {R:"#EF4444", I:"#3B82F6", A:"#F59E0B", S:"#22C55E", E:"#8B5CF6", C:"#EC4899"};
-const TYPES = ["R","I","A","S","E","C"];
+var TN = {R:"现实型", I:"研究型", A:"艺术型", S:"社会型", E:"企业型", C:"常规型"};
+var TYPES = ["R","I","A","S","E","C"];
+var PER = 5, CUR = 0, ANSW = {}, RES = null;
+var optLabels = ["非常符合","比较符合","一般","不符合"];
+var optVals = [3,2,1,0];
 
-const MODERN_JOBS = {
+var MODERN_JOBS = {
   best: {
-    R: ["机械工程师","电气工程师","建筑设计师","自动驾驶测试工程师","无人机操作员","运动康复师","餐饮主厨"],
-    I: ["数据科学家","AI算法工程师","医学研究员","量化分析师","生物科技研究员","网络安全专家","科研学者"],
-    A: ["UX/UI设计师","游戏原画师","短视频编导","品牌设计师","独立音乐人","作家/编剧","室内设计师"],
-    S: ["心理咨询师","职业规划师","人力资源总监","大学教师","社会工作者","教育培训顾问","心理咨询师"],
-    E: ["产品经理","创业CEO","销售总监","投资经理","企业顾问","市场营销总监","政府事务经理"],
-    C: ["财务总监","审计师","数据分析师","运营管理","档案管理员","项目管理","供应链经理"]
+    R:["机械工程师","电气工程师","建筑设计师","自动驾驶测试工程师","无人机操作员","运动康复师","餐饮主厨"],
+    I:["数据科学家","AI算法工程师","医学研究员","量化分析师","生物科技研究员","网络安全专家","科研学者"],
+    A:["UX/UI设计师","游戏原画师","短视频编导","品牌设计师","独立音乐人","作家/编剧","室内设计师"],
+    S:["心理咨询师","职业规划师","人力资源总监","大学教师","社会工作者","教育培训顾问"],
+    E:["产品经理","创业CEO","销售总监","投资经理","企业顾问","市场营销总监","政府事务经理"],
+    C:["财务总监","审计师","数据分析师","运营管理","档案管理员","项目管理","供应链经理"]
   },
-  development: {
-    R: ["技术项目经理","产品测试工程师","工程顾问","安全工程师"],
-    I: ["科技行业分析师","生物信息学专家","专利代理人","技术研究员"],
-    A: ["新媒体运营","广告创意总监","艺术策展人","自由插画师"],
-    S: ["HRBP","企业培训师","社区运营","公关专员"],
-    E: ["互联网运营","商务拓展","保险经纪人","品牌经理"],
-    C: ["税务筹划师","风控分析师","系统运维","会计"]
+  dev: {
+    R:["技术项目经理","产品测试工程师","工程顾问","安全工程师"],
+    I:["科技行业分析师","生物信息学专家","专利代理人","技术研究员"],
+    A:["新媒体运营","广告创意总监","艺术策展人","自由插画师"],
+    S:["HRBP","企业培训师","社区运营","公关专员"],
+    E:["互联网运营","商务拓展","保险经纪人","品牌经理"],
+    C:["税务筹划师","风控分析师","系统运维","会计"]
   },
-  caution: ["重复性行政岗位","流水线作业员","高度机械化操作岗","单一数据录入岗","无需思考的重复劳动"]
+  cau:["重复性行政岗位","流水线作业员","高度机械化操作岗","单一数据录入岗","无需思考的重复劳动"]
 };
 
-const INDUSTRIES = {
+var INDUSTRIES = {
   t1: { R:["智能制造","新能源","建筑地产","体育健康","交通运输"], I:["AI科技","生物医药","金融科技","科研教育","半导体"], A:["文化传媒","娱乐游戏","时尚设计","广告创意","影视文创"], S:["教育培训","心理健康","医疗健康","社会工作","公益组织"], E:["互联网","风险投资","管理咨询","房地产","消费品牌"], C:["金融保险","审计会计","政府机构","企业管理","信息技术"] },
   t2: { R:["农业科技","物流仓储","制造业"], I:["环境保护","数据分析","咨询服务"], A:["品牌营销","自媒体","休闲旅游"], S:["社区服务","亲子教育","养老服务"], E:["跨境电商","企业服务","供应链"], C:["银行证券","财税服务","人力资源"] }
 };
 
-function getTypeDesc(t) {
-  const desc = {
-    R: { like:["动手操作","户外活动","使用工具","机械维修"], dislike:["复杂社交","抽象思考","文书工作"], good:["动手能力强","务实稳重","耐力好","做事踏实"], bad:["不善社交","缺乏想象力","适应性差","表达欠佳"] },
-    I: { like:["探索未知","独立思考","分析问题","学习新知"], dislike:["重复劳动","机械执行","强社交"], good:["学习能力强","分析突出","逻辑优秀","善于解决复杂问题"], bad:["可能过度思考","行动力不足","不喜欢管理琐事","社交偏少"] },
-    A: { like:["创造表达","审美追求","新颖创意","自由工作"], dislike:["重复刻板","严格规则","约束环境"], good:["创造力强","审美敏锐","情感丰富","表达力好"], bad:["不够务实","情绪化","不守常规","容易冲动","不喜欢细节"] },
-    S: { like:["助人为乐","人际交流","团队合作","影响他人"], dislike:["独立工作","机械操作","冷冰冰的环境"], good:["同理心强","善于沟通","乐于助人","责任感强"], bad:["过于在意他人看法","容易情感透支","决策犹豫","被他人情绪影响"] },
-    E: { like:["领导团队","竞争挑战","影响说服","追求成就"], dislike:["被动执行","缺乏挑战","按部就班"], good:["领导力强","执行力好","敢于冒险","善于交际"], bad:["过于强势","不够耐心","容易忽视细节","过于结果导向"] },
-    C: { like:["计划组织","精确有序","规则清晰","完成细节"], dislike:["模糊环境","频繁变化","不确定性"], good:["条理性强","细心可靠","守时守信","执行力强"], bad:["缺乏创新","应变力弱","过于保守","不喜欢变化"] }
-  };
-  const d = desc[t] || desc.I;
-  let html = `<div class="type-card ${t}"><h4>${TYPE_NAMES[t]}（${t}）</h4>`;
-  html += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">`;
-  html += `<div><strong style="font-size:13px;color:#166534;">喜欢：</strong><ul>${d.like.map(x=>'<li>'+x+'</li>').join('')}</ul></div>`;
-  html += `<div><strong style="font-size:13px;color:#991B1B;">不喜欢：</strong><ul>${d.dislike.map(x=>'<li>'+x+'</li>').join('')}</ul></div>`;
-  html += `</div></div>`;
-  html += `<div class="advantages"><div class="advantage good"><strong>优势</strong><br>${d.good.join('、')}</div><div class="advantage bad"><strong>风险</strong><br>${d.bad.join('、')}</div></div>`;
-  return html;
+var TYPE_DESC = {
+  R: { like:["动手操作","户外活动","使用工具","机械维修"], dislike:["复杂社交","抽象思考","文书工作"], good:["动手能力强","务实稳重","耐力好","做事踏实"], bad:["不善社交","缺乏想象力","适应性差","表达欠佳"] },
+  I: { like:["探索未知","独立思考","分析问题","学习新知"], dislike:["重复劳动","机械执行","强社交"], good:["学习能力强","分析突出","逻辑优秀","善于解决复杂问题"], bad:["可能过度思考","行动力不足","不喜欢管理琐事","社交偏少"] },
+  A: { like:["创造表达","审美追求","新颖创意","自由工作"], dislike:["重复刻板","严格规则","约束环境"], good:["创造力强","审美敏锐","情感丰富","表达力好"], bad:["不够务实","情绪化","不守常规","容易冲动","不喜欢细节"] },
+  S: { like:["助人为乐","人际交流","团队合作","影响他人"], dislike:["独立工作","机械操作","冷冰冰的环境"], good:["同理心强","善于沟通","乐于助人","责任感强"], bad:["过于在意他人看法","容易情感透支","决策犹豫","被他人情绪影响"] },
+  E: { like:["领导团队","竞争挑战","影响说服","追求成就"], dislike:["被动执行","缺乏挑战","按部就班"], good:["领导力强","执行力好","敢于冒险","善于交际"], bad:["过于强势","不够耐心","容易忽视细节","过于结果导向"] },
+  C: { like:["计划组织","精确有序","规则清晰","完成细节"], dislike:["模糊环境","频繁变化","不确定性"], good:["条理性强","细心可靠","守时守信","执行力强"], bad:["缺乏创新","应变力弱","过于保守","不喜欢变化"] }
+};
+
+// --- 核心函数 ---
+function g(id) { 
+  // 生成内容
+  if (id === 'p5' && RES) showPerson();
+  else if (id === 'p6' && RES) showJobs();
+  else if (id === 'p7' && RES) showInd();
+  else if (id === 'p8' && RES) showAdv();
+  else if (id === 'p9' && RES) showRpt();
+  // 切换页面
+  var all = document.querySelectorAll('.pg');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('sel');
+  document.getElementById(id).classList.add('sel');
+  window.scrollTo(0,0);
 }
 
-const PER_PAGE = 5;
-const TOTAL_PAGES = 18;
-let currentPage = 0;
-let answers = {};
-let result = null;
+function showInfo() { g('p1'); }
+function showCalc() { g('p3'); }
 
 function startTest() {
-  answers = {};
-  currentPage = 0;
-  renderQuestions();
-  goToPage('page-questions');
+  ANSW = {};
+  CUR = 0;
+  renderQ();
+  g('p2');
 }
 
-function renderQuestions() {
-  const container = document.getElementById('questionsContainer');
-  const start = currentPage * PER_PAGE;
-  const pageQ = QUESTIONS.slice(start, start + PER_PAGE);
-  let html = '';
-  pageQ.forEach((q, idx) => {
-    const qid = q[0];
-    const num = start + idx + 1;
-    html += `<div style="margin-bottom:24px;">`;
-    html += `<div class="question-num">第 ${num} 题 / 共 90 题</div>`;
-    html += `<div class="question-text">${q[1]}</div>`;
-    html += `<div class="options" id="opts-${qid}">`;
-    const opts = ["非常符合","比较符合","一般","不符合"];
-    const vals = [3,2,1,0];
-    const sel = answers[qid];
-    opts.forEach((o, oi) => {
-      const selected = (sel === vals[oi]) ? ' selected' : '';
-      html += `<div class="option${selected}" data-qid="${qid}" data-val="${vals[oi]}">`;
-      html += `<span class="dot"></span><span>${o}</span></div>`;
-    });
-    html += `</div></div>`;
-  });
-  container.innerHTML = html;
-  updateProgress();
-  document.getElementById('prevBtn').disabled = (currentPage === 0);
-
-  const isLast = (currentPage === TOTAL_PAGES - 1);
+function renderQ() {
+  var start = CUR * PER;
+  var items = Q.slice(start, start + PER);
+  var totalPages = Math.ceil(Q.length / PER);
+  var html = '';
+  for (var i = 0; i < items.length; i++) {
+    var q = items[i];
+    var num = start + i + 1;
+    html += '<div style="margin-bottom:20px;">';
+    html += '<div style="font-size:12px;color:#64748B;margin-bottom:4px;">第 ' + num + ' 题 / 共 90 题</div>';
+    html += '<div style="font-weight:600;margin-bottom:8px;">' + q[1] + '</div>';
+    html += '<div id="opts' + q[0] + '">';
+    var sel = ANSW[q[0]];
+    for (var oi = 0; oi < optLabels.length; oi++) {
+      var cls = (sel === optVals[oi]) ? ' sel' : '';
+      html += '<div class="opt' + cls + '" onclick="pick(' + q[0] + ',' + optVals[oi] + ')"><span class="dot"></span><span>' + optLabels[oi] + '</span></div>';
+    }
+    html += '</div></div>';
+  }
+  document.getElementById('qContainer').innerHTML = html;
+  var done = Math.min(90, CUR * PER + Object.keys(ANSW).filter(function(k){return ANSW[k]!==undefined}).length);
+  var pct = Math.round(done / 90 * 100);
+  document.getElementById('progBar').style.width = Math.min(pct,100) + '%';
+  document.getElementById('progLabel').textContent = '第 ' + (CUR+1) + ' 页 / 共 ' + totalPages + ' 页';
+  document.getElementById('progPct').textContent = Math.min(pct,100) + '%';
+  document.getElementById('prevBtn').disabled = (CUR === 0);
+  var isLast = (CUR === totalPages - 1);
   document.getElementById('nextBtn').textContent = isLast ? '提交答案' : '下一页';
   document.getElementById('nextBtn').disabled = false;
 }
 
-function selectOption(qid, val) {
-  answers[qid] = val;
-  document.querySelectorAll(`#opts-${qid} .option`).forEach((el, i) => {
-    el.classList.toggle('selected', i === [3,2,1,0].indexOf(val));
-  });
+function pick(qid, val) {
+  ANSW[qid] = val;
+  // 更新 UI
+  var opts = document.getElementById('opts' + qid).querySelectorAll('.opt');
+  for (var i = 0; i < opts.length; i++) {
+    opts[i].classList.toggle('sel', optVals[i] === val);
+  }
+  var done = Object.keys(ANSW).filter(function(k){return ANSW[k]!==undefined}).length;
+  var pct = Math.round(done / 90 * 100);
+  document.getElementById('progBar').style.width = Math.min(pct,100) + '%';
+  document.getElementById('progPct').textContent = Math.min(pct,100) + '%';
 }
 
-function prevPage() {
-  if (currentPage > 0) { currentPage--; renderQuestions(); }
+function prevQ() {
+  if (CUR > 0) { CUR--; renderQ(); }
 }
 
-function nextPage() {
-  const start = currentPage * PER_PAGE;
-  const pageQ = QUESTIONS.slice(start, start + PER_PAGE);
-  for (const q of pageQ) {
-    if (answers[q[0]] === undefined) {
-      showToast('请回答本页所有题目后再继续');
+function nextQ() {
+  var start = CUR * PER;
+  var items = Q.slice(start, start + PER);
+  for (var i = 0; i < items.length; i++) {
+    if (ANSW[items[i][0]] === undefined) {
+      toast('请回答本页所有题目后再继续');
       return;
     }
   }
-  if (currentPage < TOTAL_PAGES - 1) {
-    currentPage++;
-    renderQuestions();
+  var totalPages = Math.ceil(Q.length / PER);
+  if (CUR < totalPages - 1) {
+    CUR++;
+    renderQ();
   } else {
-    calculateResults();
+    calcResult();
   }
 }
 
-function updateProgress() {
-  const pct = Math.round(((currentPage * PER_PAGE + Object.keys(answers).filter(k=>answers[k]!==undefined).length) / 90) * 100);
-  document.getElementById('progressBar').style.width = Math.min(pct, 100) + '%';
-  document.getElementById('progressLabel').textContent = `第 ${currentPage+1} 页 / 共 18 页`;
-  document.getElementById('progressPercent').textContent = Math.min(pct, 100) + '%';
-}
-
-function calculateResults() {
-  goToPage('page-calc');
-  setTimeout(() => {
-    const scores = {R:0, I:0, A:0, S:0, E:0, C:0};
-    for (const q of QUESTIONS) {
-      const val = answers[q[0]];
-      if (val !== undefined) scores[q[2]] += val;
+function calcResult() {
+  g('p3');
+  setTimeout(function() {
+    var scores = {R:0, I:0, A:0, S:0, E:0, C:0};
+    for (var i = 0; i < Q.length; i++) {
+      var v = ANSW[Q[i][0]];
+      if (v !== undefined) scores[Q[i][2]] += v;
     }
-    const maxPerDim = 15 * 3; // 15 questions * max 3 points
-    const pctScores = {};
-    for (const t of TYPES) {
-      pctScores[t] = Math.round((scores[t] / maxPerDim) * 100);
+    var maxPer = 15 * 3;
+    var pct = {};
+    for (var t = 0; t < TYPES.length; t++) {
+      pct[TYPES[t]] = Math.round(scores[TYPES[t]] / maxPer * 100);
     }
-    const sorted = TYPES.slice().sort((a,b) => pctScores[b] - pctScores[a]);
-    const code = sorted.slice(0,3).join('');
-    result = { raw: scores, scores: pctScores, sorted, code };
+    var sorted = TYPES.slice().sort(function(a,b){return pct[b]-pct[a];});
+    RES = {raw:scores, scores:pct, sorted:sorted, code:sorted.slice(0,3).join('')};
     showResult();
   }, 1200);
 }
 
 function showResult() {
-  const s = result.scores;
-  document.getElementById('codeBadge').textContent = result.code;
-  document.getElementById('codeLabel').textContent = result.sorted.map(t=>TYPE_NAMES[t]).join(' + ');
+  var s = RES.scores;
+  document.getElementById('rCode').textContent = RES.code;
+  document.getElementById('rCodeName').textContent = RES.sorted.map(function(t){return TN[t];}).join(' + ');
   drawRadar(s);
-  let html = '';
-  for (const t of result.sorted) {
-    const pct = s[t];
-    html += `<div class="score-item"><div class="score-label"><span class="name">${TYPE_NAMES[t]} (${t})</span><span class="val">${pct}</span></div><div class="score-bar-bg"><div class="score-bar ${t.toLowerCase()}" style="width:${pct}%"></div></div></div>`;
+  var html = '';
+  for (var i = 0; i < RES.sorted.length; i++) {
+    var t = RES.sorted[i];
+    var p = s[t];
+    html += '<div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:14px;"><span><strong>' + TN[t] + '</strong> (' + t + ')</span><span>' + p + '</span></div><div class="score-bar-bg"><div class="score-bar sb-' + t.toLowerCase() + '" style="width:' + p + '%"></div></div></div>';
   }
-  document.getElementById('scoreList').innerHTML = html;
-  goToPage('page-result');
+  document.getElementById('rList').innerHTML = html;
+  g('p4');
 }
 
 function drawRadar(scores) {
-  const canvas = document.getElementById('radarCanvas');
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width = 260, h = canvas.height = 260;
-  const cx = w/2, cy = h/2, r = 95;
+  var c = document.getElementById('radarC');
+  var ctx = c.getContext('2d');
+  var w = 260, h = 260, cx = w/2, cy = h/2, r = 95;
   ctx.clearRect(0,0,w,h);
-  const labels = TYPES;
-  const angles = labels.map((_,i) => (Math.PI * 2 * i / labels.length) - Math.PI/2);
-  ctx.strokeStyle = '#E2E8F0'; ctx.fillStyle = '#E2E8F0';
-  for (let ri = 1; ri <= 5; ri++) {
-    const rr = r * ri / 5;
+  var angles = [];
+  for (var i = 0; i < TYPES.length; i++) angles.push(Math.PI * 2 * i / TYPES.length - Math.PI/2);
+  ctx.strokeStyle = '#E2E8F0';
+  for (var ri = 1; ri <= 5; ri++) {
+    var rr = r * ri / 5;
     ctx.beginPath();
-    angles.forEach((a,i) => { const x=cx+rr*Math.cos(a), y=cy+rr*Math.sin(a); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+    for (var i = 0; i < angles.length; i++) {
+      var x = cx + rr * Math.cos(angles[i]), y = cy + rr * Math.sin(angles[i]);
+      i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
     ctx.closePath(); ctx.stroke();
   }
-  angles.forEach(a => { ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a)); ctx.stroke(); });
-  const vals = labels.map(t => scores[t]/100);
+  for (var i = 0; i < angles.length; i++) {
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+r*Math.cos(angles[i]),cy+r*Math.sin(angles[i])); ctx.stroke();
+  }
   ctx.beginPath();
-  angles.forEach((a,i) => { const x=cx+r*vals[i]*Math.cos(a), y=cy+r*vals[i]*Math.sin(a); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+  for (var i = 0; i < angles.length; i++) {
+    var x = cx + r * (scores[TYPES[i]]/100) * Math.cos(angles[i]);
+    var y = cy + r * (scores[TYPES[i]]/100) * Math.sin(angles[i]);
+    i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  }
   ctx.closePath(); ctx.fillStyle = 'rgba(79,70,229,0.2)'; ctx.fill(); ctx.strokeStyle = '#4F46E5'; ctx.lineWidth=2; ctx.stroke();
-  angles.forEach((a,i) => { const x=cx+r*vals[i]*Math.cos(a), y=cy+r*vals[i]*Math.sin(a); ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fillStyle='#4F46E5'; ctx.fill(); });
   ctx.font = '13px sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#1E293B';
-  angles.forEach((a,i) => { const x=cx+(r+18)*Math.cos(a), y=cy+(r+18)*Math.sin(a); ctx.fillText(labels[i], x, y+4); });
+  for (var i = 0; i < angles.length; i++) {
+    var x = cx + (r + 18) * Math.cos(angles[i]);
+    var y = cy + (r + 18) * Math.sin(angles[i]);
+    ctx.fillText(TYPES[i], x, y + 4);
+  }
 }
 
-function showPersonality() {
-  const sorted = result.sorted;
-  let html = '<div class="quote-text">你的核心类型是 <strong>'+TYPE_NAMES[sorted[0]]+'</strong></div>';
-  for (let i = 0; i < Math.min(3, sorted.length); i++) {
-    html += getTypeDesc(sorted[i]);
+function showPerson() {
+  var html = '<div class="quote">你的核心类型是 <strong>' + TN[RES.sorted[0]] + '</strong></div>';
+  for (var i = 0; i < Math.min(3, RES.sorted.length); i++) {
+    html += typeCard(RES.sorted[i]);
   }
-  document.getElementById('personalityContent').innerHTML = html;
-  switchToPage('page-personality');
+  document.getElementById('rPersonality').innerHTML = html;
+}
+
+function typeCard(t) {
+  var d = TYPE_DESC[t];
+  var h = '<div style="border:2px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:12px;">';
+  h += '<h4 style="margin-bottom:8px;">' + TN[t] + '（' + t + '）</h4>';
+  h += '<div class="opt-group"><div><strong style="font-size:13px;color:#166534;">✓ 喜欢：</strong><ul style="font-size:13px;padding-left:16px;">';
+  for (var i = 0; i < d.like.length; i++) h += '<li>' + d.like[i] + '</li>';
+  h += '</ul></div><div><strong style="font-size:13px;color:#991B1B;">✗ 不喜欢：</strong><ul style="font-size:13px;padding-left:16px;">';
+  for (var i = 0; i < d.dislike.length; i++) h += '<li>' + d.dislike[i] + '</li>';
+  h += '</ul></div></div>';
+  h += '<div style="display:flex;gap:8px;margin-top:8px;">';
+  h += '<div style="flex:1;background:#F0FDF4;border-radius:8px;padding:10px;"><strong style="font-size:13px;color:#166534;">优势</strong><br><span style="font-size:13px;">' + d.good.join('、') + '</span></div>';
+  h += '<div style="flex:1;background:#FEF2F2;border-radius:8px;padding:10px;"><strong style="font-size:13px;color:#991B1B;">风险</strong><br><span style="font-size:13px;">' + d.bad.join('、') + '</span></div>';
+  h += '</div></div>';
+  return h;
 }
 
 function showJobs() {
-  const sorted = result.sorted;
-  const p = result.scores;
-  let html = '';
-  const bestJobs = [];
-  for (const t of sorted) {
-    if (MODERN_JOBS.best[t]) bestJobs.push(...MODERN_JOBS.best[t]);
+  var sorted = RES.sorted;
+  var best = [], dev = [];
+  for (var i = 0; i < sorted.length; i++) {
+    if (MODERN_JOBS.best[sorted[i]]) best = best.concat(MODERN_JOBS.best[sorted[i]]);
+    if (MODERN_JOBS.dev[sorted[i]]) dev = dev.concat(MODERN_JOBS.dev[sorted[i]]);
   }
-  const devJobs = [];
-  for (const t of sorted) {
-    if (MODERN_JOBS.development[t]) devJobs.push(...MODERN_JOBS.development[t]);
-  }
-  html += `<div class="job-category"><h4>🌟🌟🌟 最适合你的职业 <span class="stars">★★★★★</span></h4><div class="job-tags">${bestJobs.map(j=>'<span class="job-tag best">'+j+'</span>').join('')}</div></div>`;
-  html += `<div class="job-category"><h4>🌟🌟 可发展的职业 <span class="stars">★★★★</span></h4><div class="job-tags">${devJobs.map(j=>'<span class="job-tag">'+j+'</span>').join('')}</div></div>`;
-  html += `<div class="job-category"><h4>⚠️ 谨慎选择的职业</h4><div class="job-tags">${MODERN_JOBS.caution.map(j=>'<span class="job-tag caution">'+j+'</span>').join('')}</div></div>`;
-  document.getElementById('jobContent').innerHTML = html;
-  switchToPage('page-jobs');
+  var h = '<div style="margin-bottom:16px;"><h4 style="margin-bottom:8px;">最适合你的职业</h4>';
+  h += best.map(function(j){return '<span class="tag best">' + j + '</span>';}).join('') + '</div>';
+  h += '<div style="margin-bottom:16px;"><h4 style="margin-bottom:8px;">可发展的职业</h4>';
+  h += dev.map(function(j){return '<span class="tag dev">' + j + '</span>';}).join('') + '</div>';
+  h += '<div><h4 style="margin-bottom:8px;">谨慎选择的职业</h4>';
+  h += MODERN_JOBS.cau.map(function(j){return '<span class="tag cau">' + j + '</span>';}).join('') + '</div>';
+  document.getElementById('rJobs').innerHTML = h;
 }
 
-function showIndustry() {
-  const sorted = result.sorted;
-  let html = '';
-  const ind1 = [], ind2 = [];
-  for (const t of sorted) {
-    if (INDUSTRIES.t1[t]) ind1.push(...INDUSTRIES.t1[t]);
-    if (INDUSTRIES.t2[t]) ind2.push(...INDUSTRIES.t2[t]);
+function showInd() {
+  var sorted = RES.sorted;
+  var t1 = [], t2 = [];
+  for (var i = 0; i < sorted.length; i++) {
+    if (INDUSTRIES.t1[sorted[i]]) t1 = t1.concat(INDUSTRIES.t1[sorted[i]]);
+    if (INDUSTRIES.t2[sorted[i]]) t2 = t2.concat(INDUSTRIES.t2[sorted[i]]);
   }
-  html += `<div class="tier"><h4>🥇 第一梯队</h4><div class="tier-tags">${[...new Set(ind1)].map(j=>'<span class="tier-tag t1">'+j+'</span>').join('')}</div></div>`;
-  html += `<div class="tier"><h4>🥈 第二梯队</h4><div class="tier-tags">${[...new Set(ind2)].map(j=>'<span class="tier-tag t2">'+j+'</span>').join('')}</div></div>`;
-  document.getElementById('industryContent').innerHTML = html;
-  switchToPage('page-industry');
+  var h = '<div style="margin-bottom:16px;"><h4 style="margin-bottom:8px;">第一梯队</h4>';
+  h = h + [...new Set(t1)].map(function(j){return '<span class="tier-tag t1">' + j + '</span>';}).join('');
+  h += '</div><div><h4 style="margin-bottom:8px;">第二梯队</h4>';
+  h = h + [...new Set(t2)].map(function(j){return '<span class="tier-tag t2">' + j + '</span>';}).join('');
+  h += '</div>';
+  document.getElementById('rIndustry').innerHTML = h;
 }
 
-function showAdvice() {
-  const sorted = result.sorted;
-  const advice = [];
-  if (sorted[0] === 'I') advice.push("少研究，多行动——定下目标就动手，不要等到【完全想明白】");
-  if (sorted[0] === 'A') advice.push("把创意落地——好的创意需要执行来验证，不要止步于想");
-  if (sorted[0] === 'S') advice.push("设立情感边界——帮助他人之前，先照顾好自己");
-  if (sorted[0] === 'E') advice.push("关注细节——大的方向感很好，但细节决定成败");
-  if (sorted[0] === 'R') advice.push("拓展人际圈——技术很强，别忘了和人打交道的价值");
-  if (sorted[0] === 'C') advice.push("偶尔跳出规则——循规蹈矩很安全，但会让你错过一些机会");
-  advice.push("每年至少学习一项新技能，保持竞争力");
-  advice.push("建立个人知识库，系统梳理你的专业积累");
-  advice.push("尝试成为某个细分领域的专家，建立你的个人品牌");
-  advice.push("定期复盘职业规划：你喜欢现在的方向吗？下一步要走向哪里？");
-  let html = `<ol class="advice-list">${advice.map(a=>'<li>'+a+'</li>').join('')}</ol>`;
-  document.getElementById('adviceContent').innerHTML = html;
-  switchToPage('page-advice');
+function showAdv() {
+  var sorted = RES.sorted;
+  var list = [];
+  if (sorted[0] === 'I') list.push("少研究，多行动——定下目标就动手，不要等到【完全想明白】");
+  if (sorted[0] === 'A') list.push("把创意落地——好的创意需要执行来验证");
+  if (sorted[0] === 'S') list.push("设立情感边界——帮助他人之前，先照顾好自己");
+  if (sorted[0] === 'E') list.push("关注细节——大的方向感很好，但细节决定成败");
+  if (sorted[0] === 'R') list.push("拓展人际圈——技术很强，别忘了和人打交道的价值");
+  if (sorted[0] === 'C') list.push("偶尔跳出规则——循规蹈矩很安全，但会让你错过一些机会");
+  list.push("每年至少学习一项新技能，保持竞争力");
+  list.push("建立个人知识库，系统梳理你的专业积累");
+  list.push("尝试成为某个细分领域的专家，建立你的个人品牌");
+  list.push("定期复盘职业规划：你喜欢现在的方向吗？下一步要走向哪里？");
+  var h = '<ol class="advice-list">' + list.map(function(a){return '<li>' + a + '</li>';}).join('') + '</ol>';
+  document.getElementById('rAdvice').innerHTML = h;
 }
 
-function showReport() {
-  const s = result.scores;
-  const sorted = result.sorted;
-  const gender = document.getElementById('gender').value;
-  const age = document.getElementById('age').value;
-  document.getElementById('reportName').textContent = gender + (gender !== '未填写' ? ' · ' : '') + age;
-  document.getElementById('reportCode').textContent = result.code + '（' + sorted.map(t=>TYPE_NAMES[t]).join(' + ') + '）';
-  let html = '';
-  for (const t of sorted) {
-    html += `<div class="score-item"><div class="score-label"><span class="name">${TYPE_NAMES[t]} (${t})</span><span class="val">${s[t]}/100</span></div><div class="score-bar-bg"><div class="score-bar ${t.toLowerCase()}" style="width:${s[t]}%"></div></div></div>`;
+function showRpt() {
+  var s = RES.scores, sorted = RES.sorted;
+  var name = document.getElementById('gender').value;
+  var age = document.getElementById('age').value;
+  document.getElementById('rptName').textContent = name + (name !== '请选择' ? ' · ' : '') + age;
+  document.getElementById('rptCode').textContent = RES.code + '（' + sorted.map(function(t){return TN[t];}).join(' + ') + '）';
+  var html = '';
+  for (var i = 0; i < sorted.length; i++) {
+    var t = sorted[i];
+    html += '<div style="margin-bottom:6px;"><div style="display:flex;justify-content:space-between;font-size:13px;"><span>' + TN[t] + ' (' + t + ')</span><span>' + s[t] + '/100</span></div><div class="score-bar-bg"><div class="score-bar sb-' + t.toLowerCase() + '" style="width:' + s[t] + '%"></div></div></div>';
   }
-  document.getElementById('reportScores').innerHTML = html;
-
-  const d = getTypeDesc(sorted[0]);
-  const goodMatch = d.match(/优势<\/strong><br>([^<]+)/);
-  document.getElementById('reportStrengths').innerHTML = goodMatch ? '<p>'+goodMatch[1]+'</p>' : '<p>详见人格解读页面</p>';
-  const badMatch = d.match(/风险<\/strong><br>([^<]+)/);
-  document.getElementById('reportWeaknesses').innerHTML = badMatch ? '<p>'+badMatch[1]+'</p>' : '<p>详见人格解读页面</p>';
-
-  const bestJobs = [];
-  for (const t of sorted) if (MODERN_JOBS.best[t]) bestJobs.push(...MODERN_JOBS.best[t]);
-  document.getElementById('reportJobs').innerHTML = '<p>'+bestJobs.slice(0,6).join('、')+'</p>';
-
-  const inds = [];
-  for (const t of sorted) if (INDUSTRIES.t1[t]) inds.push(...INDUSTRIES.t1[t]);
-  document.getElementById('reportIndustries').innerHTML = '<p>'+[...new Set(inds)].slice(0,6).join('、')+'</p>';
-
-  const advice = [];
-  if (sorted[0] === 'I') advice.push("少研究，多行动");
-  if (sorted[0] === 'A') advice.push("把创意落地");
-  if (sorted[0] === 'S') advice.push("设立情感边界");
-  if (sorted[0] === 'E') advice.push("关注细节");
-  if (sorted[0] === 'R') advice.push("拓展人际圈");
-  if (sorted[0] === 'C') advice.push("偶尔跳出规则");
-  advice.push("每年学习一项新技能","建立个人知识库","尝试成为细分领域专家","定期复盘职业规划");
-  document.getElementById('reportAdvice').innerHTML = '<ol class="advice-list">'+advice.map(a=>'<li>'+a+'</li>').join('')+'</ol>';
-
-  switchToPage('page-report');
+  document.getElementById('rptScores').innerHTML = html;
+  var d = TYPE_DESC[sorted[0]];
+  document.getElementById('rptStr').innerHTML = '<p style="font-size:14px;">' + d.good.join('、') + '</p>';
+  document.getElementById('rptWeak').innerHTML = '<p style="font-size:14px;">' + d.bad.join('、') + '</p>';
+  var best = [];
+  for (var i = 0; i < sorted.length; i++) if (MODERN_JOBS.best[sorted[i]]) best = best.concat(MODERN_JOBS.best[sorted[i]]);
+  document.getElementById('rptJobs').innerHTML = '<p style="font-size:14px;">' + best.slice(0,6).join('、') + '</p>';
+  var inds = [];
+  for (var i = 0; i < sorted.length; i++) if (INDUSTRIES.t1[sorted[i]]) inds = inds.concat(INDUSTRIES.t1[sorted[i]]);
+  document.getElementById('rptInd').innerHTML = '<p style="font-size:14px;">' + [...new Set(inds)].slice(0,6).join('、') + '</p>';
+  var adv = [];
+  if (sorted[0] === 'I') adv.push("少研究，多行动");
+  if (sorted[0] === 'A') adv.push("把创意落地");
+  if (sorted[0] === 'S') adv.push("设立情感边界");
+  if (sorted[0] === 'E') adv.push("关注细节");
+  if (sorted[0] === 'R') adv.push("拓展人际圈");
+  if (sorted[0] === 'C') adv.push("偶尔跳出规则");
+  adv.push("每年学习一项新技能","建立个人知识库","成为细分领域专家","定期复盘");
+  document.getElementById('rptAdv').innerHTML = '<ol class="advice-list" style="font-size:14px;">' + adv.map(function(a){return '<li>' + a + '</li>';}).join('') + '</ol>';
 }
 
-function showToast(msg) {
-  const t = document.createElement('div');
+function toast(msg) {
+  var t = document.createElement('div');
   t.className = 'toast'; t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(()=>t.remove(), 2500);
+  setTimeout(function(){t.remove();}, 2500);
 }
 
-function downloadReport() {
-  showToast('📥 正在生成报告下载链接（可使用浏览器打印→另存为PDF）');
+function fmtPrint() {
+  toast('正在生成报告…可使用浏览器打印功能另存为PDF');
   window.print();
 }
 
-function saveResult() {
-  if (!result) { showToast('请先完成测试'); return; }
-  const data = {
+function saveLocal() {
+  if (!RES) { toast('请先完成测试'); return; }
+  var data = {
     date: new Date().toLocaleDateString('zh-CN'),
-    code: result.code,
-    scores: result.scores,
-    sorted: result.sorted.map(t=>TYPE_NAMES[t]),
-    info: { gender: document.getElementById('gender').value, age: document.getElementById('age').value, edu: document.getElementById('education').value }
+    code: RES.code,
+    scores: RES.scores,
+    sorted: RES.sorted.map(function(t){return TN[t];}),
+    info: {gender: document.getElementById('gender').value, age: document.getElementById('age').value}
   };
-  localStorage.setItem('holland_result', JSON.stringify(data));
-  showToast('✅ 结果已保存到本地！');
-}
-
-function shareResult() {
-  if (!result) { showToast('请先完成测试'); return; }
-  const text = `📋 我的霍兰德职业兴趣测试结果\n代码：${result.code}\n类型：${result.sorted.map(t=>TYPE_NAMES[t]).join(' + ')}\n\n快来做测试，找到适合你的职业方向！`;
-  if (navigator.share) {
-    navigator.share({ title: '霍兰德职业兴趣测试', text });
-  } else {
-    navigator.clipboard.writeText(text).then(() => showToast('📋 已复制到剪贴板，快去分享吧！'));
+  try {
+    localStorage.setItem('holland_result', JSON.stringify(data));
+    toast('结果已保存到本地！');
+  } catch(e) {
+    toast('保存失败：' + e.message);
   }
 }
 
-// goToPage: 切换页面并在需要时生成对应内容
-function goToPage(id) {
-  if (id === 'page-personality' && result) { showPersonality(); return; }
-  if (id === 'page-jobs' && result) { showJobs(); return; }
-  if (id === 'page-industry' && result) { showIndustry(); return; }
-  if (id === 'page-advice' && result) { showAdvice(); return; }
-  if (id === 'page-report' && result) { showReport(); return; }
-  switchToPage(id);
+function shareIt() {
+  if (!RES) { toast('请先完成测试'); return; }
+  var text = '我的霍兰德职业兴趣测试结果\n代码：' + RES.code + '\n类型：' + RES.sorted.map(function(t){return TN[t];}).join(' + ') + '\n\n快来做测试吧！';
+  if (navigator.share) {
+    navigator.share({title: '霍兰德职业兴趣测试', text: text});
+  } else {
+    try {
+      navigator.clipboard.writeText(text).then(function(){toast('已复制，去分享吧！');});
+    } catch(e) {
+      toast('请手动复制结果');
+    }
+  }
 }
-
-// switchToPage: 单纯切换页面，不触发内容生成
-function switchToPage(id) {
-  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
-
-// 初始化：直接执行绑定（script 在 body 底部，DOM 已就绪）
-(function() {
-  document.addEventListener('click', function(e) {
-    // 查找点击的目标或父级是否有 data-action
-    var target = e.target.closest ? e.target.closest('[data-action]') : null;
-    if (!target) {
-      // fallback: 手动向上查找
-      var el = e.target;
-      while (el && el !== document) {
-        if (el.getAttribute && el.getAttribute('data-action')) {
-          target = el;
-          break;
-        }
-        el = el.parentNode;
-      }
-    }
-    if (target) {
-      var action = target.getAttribute('data-action');
-      if (action === 'startTest') { startTest(); return; }
-      if (action === 'prevPage') { prevPage(); return; }
-      if (action === 'nextPage') { nextPage(); return; }
-      if (action === 'downloadReport') { downloadReport(); return; }
-      if (action === 'saveResult') { saveResult(); return; }
-      if (action === 'shareResult') { shareResult(); return; }
-      if (action.indexOf('goto:') === 0) { goToPage('page-' + action.slice(5)); return; }
-    }
-    // 处理选项点击
-    var opt = e.target.closest ? e.target.closest('.option[data-qid]') : null;
-    if (!opt) {
-      var el = e.target;
-      while (el && el !== document) {
-        if (el.classList && el.classList.contains('option') && el.getAttribute('data-qid')) {
-          opt = el;
-          break;
-        }
-        el = el.parentNode;
-      }
-    }
-    if (opt) {
-      var qid = parseInt(opt.getAttribute('data-qid'));
-      var val = parseInt(opt.getAttribute('data-val'));
-      selectOption(qid, val);
-    }
-  });
-})();
 </script>
 </body>
 </html>
