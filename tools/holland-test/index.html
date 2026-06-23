@@ -29,7 +29,8 @@
     line-height: 1.6;
   }
   .container { max-width: 640px; margin: 0 auto; padding: 16px; }
-  .page { display: none; }
+  .page { display: block; }
+  .page:not(.active) { display: none; }
   .page.active { display: block; animation: fadeIn 0.4s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   .card {
@@ -754,11 +755,22 @@ function switchToPage(id) {
   window.scrollTo(0,0);
 }
 
-// 初始化：绑定所有 data-action 和 data-qid 事件
-document.addEventListener('DOMContentLoaded', function() {
+// 初始化：直接执行绑定（script 在 body 底部，DOM 已就绪）
+(function() {
   document.addEventListener('click', function(e) {
     // 查找点击的目标或父级是否有 data-action
-    var target = e.target.closest('[data-action]');
+    var target = e.target.closest ? e.target.closest('[data-action]') : null;
+    if (!target) {
+      // fallback: 手动向上查找
+      var el = e.target;
+      while (el && el !== document) {
+        if (el.getAttribute && el.getAttribute('data-action')) {
+          target = el;
+          break;
+        }
+        el = el.parentNode;
+      }
+    }
     if (target) {
       var action = target.getAttribute('data-action');
       if (action === 'startTest') { startTest(); return; }
@@ -769,15 +781,25 @@ document.addEventListener('DOMContentLoaded', function() {
       if (action === 'shareResult') { shareResult(); return; }
       if (action.indexOf('goto:') === 0) { goToPage('page-' + action.slice(5)); return; }
     }
-    // 处理选项点击（选项也在父级查找）
-    var opt = e.target.closest('.option[data-qid]');
+    // 处理选项点击
+    var opt = e.target.closest ? e.target.closest('.option[data-qid]') : null;
+    if (!opt) {
+      var el = e.target;
+      while (el && el !== document) {
+        if (el.classList && el.classList.contains('option') && el.getAttribute('data-qid')) {
+          opt = el;
+          break;
+        }
+        el = el.parentNode;
+      }
+    }
     if (opt) {
       var qid = parseInt(opt.getAttribute('data-qid'));
       var val = parseInt(opt.getAttribute('data-val'));
       selectOption(qid, val);
     }
   });
-});
+})();
 </script>
 </body>
 </html>
