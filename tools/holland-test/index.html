@@ -189,8 +189,8 @@ body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
     <div class="report-sec"><h3>📈 成长建议</h3><div id="rptAdv"></div></div>
   </div>
   <div class="share-btns">
-    <button class="btn btn-s btn-sm" onclick="fmtPrint()">📥 下载PDF</button>
-    <button class="btn btn-o btn-sm" onclick="saveLocal()">💾 保存结果</button>
+    <button class="btn btn-s btn-sm" onclick="fmtPrint()">🖨️ 打印报告</button>
+    <button class="btn btn-o btn-sm" onclick="saveResult()">💾 下载结果</button>
     <button class="btn btn-p btn-sm" onclick="shareIt()">📤 分享</button>
     <button class="btn btn-o btn-sm" onclick="g('p0')">🔄 重新测试</button>
   </div>
@@ -256,7 +256,8 @@ function g(id) {
   var all = document.querySelectorAll('.pg');
   for (var i = 0; i < all.length; i++) all[i].classList.remove('sel');
   document.getElementById(id).classList.add('sel');
-  window.scrollTo(0,0);
+  var wrap = document.getElementById('app');
+  wrap.scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
 function showInfo() { g('p1'); }
@@ -315,6 +316,7 @@ function pick(qid, val) {
 
 function prevQ() {
   if (CUR > 0) { CUR--; renderQ(); }
+  document.getElementById('app').scrollIntoView();
 }
 
 function nextQ() {
@@ -331,6 +333,7 @@ function nextQ() {
     CUR++;
     renderQ();
   } else {
+    scrollToTop();
     calcResult();
   }
 }
@@ -508,6 +511,11 @@ function showRpt() {
   document.getElementById('rptAdv').innerHTML = '<ol class="advice-list" style="font-size:14px;">' + adv.map(function(a){return '<li>' + a + '</li>';}).join('') + '</ol>';
 }
 
+function scrollToTop() {
+  var wrap = document.getElementById('app');
+  if (wrap) wrap.scrollIntoView({behavior: 'smooth', block: 'start'});
+}  
+
 function toast(msg) {
   var t = document.createElement('div');
   t.className = 'toast'; t.textContent = msg;
@@ -516,25 +524,50 @@ function toast(msg) {
 }
 
 function fmtPrint() {
-  toast('正在生成报告…可使用浏览器打印功能另存为PDF');
+  toast('正在打开打印功能…可直接保存为PDF');
   window.print();
 }
 
-function saveLocal() {
+function saveResult() {
   if (!RES) { toast('请先完成测试'); return; }
-  var data = {
-    date: new Date().toLocaleDateString('zh-CN'),
-    code: RES.code,
-    scores: RES.scores,
-    sorted: RES.sorted.map(function(t){return TN[t];}),
-    info: {gender: document.getElementById('gender').value, age: document.getElementById('age').value}
-  };
-  try {
-    localStorage.setItem('holland_result', JSON.stringify(data));
-    toast('结果已保存到本地！');
-  } catch(e) {
-    toast('保存失败：' + e.message);
+  var name = document.getElementById('gender').value || '用户';
+  var code = RES.code;
+  var sorted = RES.sorted.map(function(t){return TN[t];}).join(' + ');
+  var s = '';
+  s += '═══════════════════════════════════\n';
+  s += '  霍兰德职业兴趣测试报告\n';
+  s += '═══════════════════════════════════\n\n';
+  s += '用户信息：' + name + '\n';
+  s += '测试时间：' + new Date().toLocaleString('zh-CN') + '\n\n';
+  s += '🔑 职业代码：' + code + '\n';
+  s += '  类型组合：' + sorted + '\n\n';
+  s += '📊 六维度分数：\n';
+  for (var i = 0; i < TYPES.length; i++) {
+    var t = TYPES[i];
+    s += '  ' + TN[t] + ' (' + t + ')：' + RES.scores[t] + '/100\n';
   }
+  s += '\n';
+  for (var i = 0; i < Math.min(3, RES.sorted.length); i++) {
+    var t = RES.sorted[i];
+    var d = TYPE_DESC[t];
+    s += '【' + TN[t] + '】\n';
+    s += '  优势：' + d.good.join('、') + '\n';
+    s += '  风险：' + d.bad.join('、') + '\n\n';
+  }
+  var best = [];
+  for (var i = 0; i < RES.sorted.length; i++) {
+    if (MODERN_JOBS.best[RES.sorted[i]]) best = best.concat(MODERN_JOBS.best[RES.sorted[i]]);
+  }
+  s += '💼 推荐职业：\n  ' + best.slice(0,8).join('、') + '\n\n---\n由霍兰德职业兴趣测试生成';
+  var blob = new Blob([s], {type:'text/plain;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '霍兰德测试报告_' + code + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  toast('报告已下载！');
 }
 
 function shareIt() {
