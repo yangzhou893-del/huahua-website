@@ -210,7 +210,7 @@
     <div class="subtitle" style="margin-bottom:24px;">
       国际通用的霍兰德职业兴趣测试，<br>从兴趣倾向角度分析你的职业人格。
     </div>
-    <button class="btn btn-primary" onclick="goToPage('page-info')">开始测试 →</button>
+    <button class="btn btn-primary" data-action="goto:page-info">开始测试 →</button>
   </div>
 </div>
 
@@ -279,7 +279,7 @@
         <option value="10年以上">10年以上</option>
       </select>
     </div>
-    <button class="btn btn-primary" onclick="startTest()">开始答题 →</button>
+    <button class="btn btn-primary" data-action="startTest">开始答题 →</button>
   </div>
 </div>
 
@@ -294,8 +294,8 @@
     </div>
     <div id="questionsContainer"></div>
     <div class="nav-buttons">
-      <button class="btn btn-outline" id="prevBtn" onclick="prevPage()" disabled>上一页</button>
-      <button class="btn btn-primary" id="nextBtn" onclick="nextPage()">下一页</button>
+      <button class="btn btn-outline" id="prevBtn" data-action="prevPage" disabled>上一页</button>
+      <button class="btn btn-primary" id="nextBtn" data-action="nextPage">下一页</button>
     </div>
   </div>
 </div>
@@ -321,7 +321,7 @@
     <div id="scoreList"></div>
   </div>
   <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" onclick="goToPage('page-personality')">查看人格解读 →</button>
+    <button class="btn btn-primary btn-sm" data-action="goto:page-personality">查看人格解读 →</button>
   </div>
 </div>
 
@@ -331,7 +331,7 @@
     <div id="personalityContent"></div>
   </div>
   <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" onclick="goToPage('page-jobs')">查看职业匹配 →</button>
+    <button class="btn btn-primary btn-sm" data-action="goto:page-jobs">查看职业匹配 →</button>
   </div>
 </div>
 
@@ -341,7 +341,7 @@
     <div id="jobContent"></div>
   </div>
   <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" onclick="goToPage('page-industry')">查看行业推荐 →</button>
+    <button class="btn btn-primary btn-sm" data-action="goto:page-industry">查看行业推荐 →</button>
   </div>
 </div>
 
@@ -351,7 +351,7 @@
     <div id="industryContent"></div>
   </div>
   <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" onclick="goToPage('page-advice')">查看成长建议 →</button>
+    <button class="btn btn-primary btn-sm" data-action="goto:page-advice">查看成长建议 →</button>
   </div>
 </div>
 
@@ -361,7 +361,7 @@
     <div id="adviceContent"></div>
   </div>
   <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary btn-sm" onclick="goToPage('page-report')">查看完整报告 →</button>
+    <button class="btn btn-primary btn-sm" data-action="goto:page-report">查看完整报告 →</button>
   </div>
 </div>
 
@@ -401,10 +401,10 @@
     </div>
   </div>
   <div class="share-buttons">
-    <button class="btn btn-success" onclick="downloadReport()">📥 下载PDF报告</button>
-    <button class="btn btn-outline" onclick="saveResult()">💾 保存测评结果</button>
-    <button class="btn btn-primary" onclick="shareResult()">📤 分享好友</button>
-    <button class="btn btn-outline" onclick="goToPage('page-home')">🔄 重新测试</button>
+    <button class="btn btn-success" data-action="downloadReport">📥 下载PDF报告</button>
+    <button class="btn btn-outline" data-action="saveResult">💾 保存测评结果</button>
+    <button class="btn btn-primary" data-action="shareResult">📤 分享好友</button>
+    <button class="btn btn-outline" data-action="goto:page-home">🔄 重新测试</button>
   </div>
 </div>
 
@@ -469,12 +469,6 @@ let currentPage = 0;
 let answers = {};
 let result = null;
 
-function goToPage(id) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
-
 function startTest() {
   answers = {};
   currentPage = 0;
@@ -499,7 +493,7 @@ function renderQuestions() {
     const sel = answers[qid];
     opts.forEach((o, oi) => {
       const selected = (sel === vals[oi]) ? ' selected' : '';
-      html += `<div class="option${selected}" onclick="selectOption(${qid}, ${vals[oi]})">`;
+      html += `<div class="option${selected}" data-qid="${qid}" data-val="${vals[oi]}">`;
       html += `<span class="dot"></span><span>${o}</span></div>`;
     });
     html += `</div></div>`;
@@ -614,7 +608,7 @@ function showPersonality() {
     html += getTypeDesc(sorted[i]);
   }
   document.getElementById('personalityContent').innerHTML = html;
-  goToPage('page-personality');
+  switchToPage('page-personality');
 }
 
 function showJobs() {
@@ -633,7 +627,7 @@ function showJobs() {
   html += `<div class="job-category"><h4>🌟🌟 可发展的职业 <span class="stars">★★★★</span></h4><div class="job-tags">${devJobs.map(j=>'<span class="job-tag">'+j+'</span>').join('')}</div></div>`;
   html += `<div class="job-category"><h4>⚠️ 谨慎选择的职业</h4><div class="job-tags">${MODERN_JOBS.caution.map(j=>'<span class="job-tag caution">'+j+'</span>').join('')}</div></div>`;
   document.getElementById('jobContent').innerHTML = html;
-  goToPage('page-jobs');
+  switchToPage('page-jobs');
 }
 
 function showIndustry() {
@@ -647,13 +641,13 @@ function showIndustry() {
   html += `<div class="tier"><h4>🥇 第一梯队</h4><div class="tier-tags">${[...new Set(ind1)].map(j=>'<span class="tier-tag t1">'+j+'</span>').join('')}</div></div>`;
   html += `<div class="tier"><h4>🥈 第二梯队</h4><div class="tier-tags">${[...new Set(ind2)].map(j=>'<span class="tier-tag t2">'+j+'</span>').join('')}</div></div>`;
   document.getElementById('industryContent').innerHTML = html;
-  goToPage('page-industry');
+  switchToPage('page-industry');
 }
 
 function showAdvice() {
   const sorted = result.sorted;
   const advice = [];
-  if (sorted[0] === 'I') advice.push("少研究，多行动——定下目标就动手，不要等到"完全想明白"");
+  if (sorted[0] === 'I') advice.push("少研究，多行动——定下目标就动手，不要等到【完全想明白】");
   if (sorted[0] === 'A') advice.push("把创意落地——好的创意需要执行来验证，不要止步于想");
   if (sorted[0] === 'S') advice.push("设立情感边界——帮助他人之前，先照顾好自己");
   if (sorted[0] === 'E') advice.push("关注细节——大的方向感很好，但细节决定成败");
@@ -665,7 +659,7 @@ function showAdvice() {
   advice.push("定期复盘职业规划：你喜欢现在的方向吗？下一步要走向哪里？");
   let html = `<ol class="advice-list">${advice.map(a=>'<li>'+a+'</li>').join('')}</ol>`;
   document.getElementById('adviceContent').innerHTML = html;
-  goToPage('page-advice');
+  switchToPage('page-advice');
 }
 
 function showReport() {
@@ -705,7 +699,7 @@ function showReport() {
   advice.push("每年学习一项新技能","建立个人知识库","尝试成为细分领域专家","定期复盘职业规划");
   document.getElementById('reportAdvice').innerHTML = '<ol class="advice-list">'+advice.map(a=>'<li>'+a+'</li>').join('')+'</ol>';
 
-  goToPage('page-report');
+  switchToPage('page-report');
 }
 
 function showToast(msg) {
@@ -743,16 +737,47 @@ function shareResult() {
   }
 }
 
-// Override goToPage to trigger content generation for pages after result
-const origGoToPage = goToPage;
-goToPage = function(id) {
-  if (id === 'page-personality' && result) showPersonality();
-  else if (id === 'page-jobs' && result) showJobs();
-  else if (id === 'page-industry' && result) showIndustry();
-  else if (id === 'page-advice' && result) showAdvice();
-  else if (id === 'page-report' && result) showReport();
-  else origGoToPage(id);
-};
+// goToPage: 切换页面并在需要时生成对应内容
+function goToPage(id) {
+  if (id === 'page-personality' && result) { showPersonality(); return; }
+  if (id === 'page-jobs' && result) { showJobs(); return; }
+  if (id === 'page-industry' && result) { showIndustry(); return; }
+  if (id === 'page-advice' && result) { showAdvice(); return; }
+  if (id === 'page-report' && result) { showReport(); return; }
+  switchToPage(id);
+}
+
+// switchToPage: 单纯切换页面，不触发内容生成
+function switchToPage(id) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// 初始化：绑定所有 data-action 和 data-qid 事件
+document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('click', function(e) {
+    // 查找点击的目标或父级是否有 data-action
+    var target = e.target.closest('[data-action]');
+    if (target) {
+      var action = target.getAttribute('data-action');
+      if (action === 'startTest') { startTest(); return; }
+      if (action === 'prevPage') { prevPage(); return; }
+      if (action === 'nextPage') { nextPage(); return; }
+      if (action === 'downloadReport') { downloadReport(); return; }
+      if (action === 'saveResult') { saveResult(); return; }
+      if (action === 'shareResult') { shareResult(); return; }
+      if (action.indexOf('goto:') === 0) { goToPage('page-' + action.slice(5)); return; }
+    }
+    // 处理选项点击（选项也在父级查找）
+    var opt = e.target.closest('.option[data-qid]');
+    if (opt) {
+      var qid = parseInt(opt.getAttribute('data-qid'));
+      var val = parseInt(opt.getAttribute('data-val'));
+      selectOption(qid, val);
+    }
+  });
+});
 </script>
 </body>
 </html>
