@@ -289,6 +289,24 @@ function renderQ() {
     }
     html += '</div></div>';
   }
+  // 随机的鼓励语
+  var encouragements = [
+    "💪 做选择时相信第一直觉，你最了解自己",
+    "🌟 没有标准答案，每一个选择都很珍贵",
+    "✨ 你在认真地了解自己，这本身就很棒",
+    "🌸 别想太多，凭感觉选就好",
+    "🌱 每次选择都是对自己的重新发现",
+    "🌈 放松点，这就像和好朋友聊天一样自然",
+    "🎯 告诉自己：我有权利了解真正的自己",
+    "💡 你的直觉往往比头脑更了解你",
+    "🌿 慢慢来，不着急，答案你自己知道",
+    "🔆 不需要完美，只需要真实",
+    "🍀 每一个回答都是你内心的一面镜子",
+    "🎵 好好感受这些题目，它们像音符一样拼凑出你的图谱",
+    "⭐ 你已经比大多数人都勇敢了——敢于面对真实的自己",
+    "🌙 做了这么多了，你真的很认真"
+  ];
+  html += '<div style="text-align:center;font-size:13px;color:#4F46E5;padding:12px 0;font-style:italic;">' + encouragements[Math.floor(Math.random() * encouragements.length)] + '</div>';
   document.getElementById('qContainer').innerHTML = html;
   var done = Math.min(90, CUR * PER + Object.keys(ANSW).filter(function(k){return ANSW[k]!==undefined}).length);
   var pct = Math.round(done / 90 * 100);
